@@ -82,6 +82,12 @@
       margin-right: 20px;
       padding: 4px 0;
     }
+    .theme-selection label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding: 8px 0;
+    }
   </style>
 </head>
 <body>
@@ -111,6 +117,19 @@
           </label>
         </div>
         <input type="text" id="customIp" placeholder="Enter IP address or hostname" disabled>
+      </div>
+    </div>
+    <div class="option-group">
+      <h3>Theme Preference</h3>
+      <div class="theme-selection">
+        <label>
+          <input type="radio" name="theme" value="flatdark" checked>
+          Flat Dark
+        </label>
+        <label>
+          <input type="radio" name="theme" value="white">
+          White
+        </label>
       </div>
     </div>
     <button id="save">Save</button>

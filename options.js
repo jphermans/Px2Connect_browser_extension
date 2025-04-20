@@ -2,13 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const customIpInput = document.getElementById('customIp');
   const radioButtons = document.getElementsByName('ipType');
   const addressTypeRadios = document.getElementsByName('addressType');
+  const themeRadios = document.getElementsByName('theme');
   const saveButton = document.getElementById('save');
 
   // Load saved settings
-  chrome.storage.sync.get(['ipType', 'customIp', 'addressType'], (result) => {
+  chrome.storage.sync.get(['ipType', 'customIp', 'addressType', 'theme'], (result) => {
     const ipType = result.ipType || 'default';
     const customIp = result.customIp || '';
     const addressType = result.addressType || 'ip';
+    const theme = result.theme || 'flatdark';
     
     radioButtons.forEach(radio => {
       radio.checked = radio.value === ipType;
@@ -16,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     addressTypeRadios.forEach(radio => {
       radio.checked = radio.value === addressType;
       radio.disabled = ipType === 'default';
+    });
+    themeRadios.forEach(radio => {
+      radio.checked = radio.value === theme;
     });
     customIpInput.value = customIp;
     customIpInput.disabled = ipType === 'default';
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   saveButton.addEventListener('click', () => {
     const ipType = document.querySelector('input[name="ipType"]:checked').value;
     const addressType = document.querySelector('input[name="addressType"]:checked').value;
+    const theme = document.querySelector('input[name="theme"]:checked').value;
     const customIp = customIpInput.value;
 
     if (ipType === 'custom' && !isValidAddress(customIp, addressType)) {
@@ -64,7 +70,8 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.sync.set({
       ipType: ipType,
       customIp: customIp,
-      addressType: addressType
+      addressType: addressType,
+      theme: theme
     }, () => {
       alert('Settings saved!');
       // Close the options tab

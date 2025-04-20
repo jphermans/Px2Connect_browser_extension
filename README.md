@@ -9,7 +9,7 @@
 - 🚀 Quick access to your PX2 device
 - 🎯 Default IP (169.254.1.1) connection
 - ✨ Custom IP or hostname support
-- 🎨 Dark mode interface
+- 🎨 Theme selection (Flat Dark or White)
 - 💼 Easy-to-use options page
 
 ## 📥 Installation
@@ -46,10 +46,21 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
 ### Configuration
 1. Right-click the extension icon
 2. Select "Options"
-3. Choose your preferred connection method:
-   - Default IP
-   - Custom IP address
-   - Custom hostname
+3. Configure your preferences:
+   - Connection Method
+     - Default IP
+     - Custom IP address
+     - Custom hostname
+   - Theme
+     - Flat Dark (default)
+     - White
+
+### Themes
+The extension supports two themes for the PX2 interface:
+- **Flat Dark**: A modern dark theme (default)
+- **White**: A clean light theme
+
+The selected theme will be applied automatically when opening any PX2 interface.
 
 ## 🔄 Updates
 

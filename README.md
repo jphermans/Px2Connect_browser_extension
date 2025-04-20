@@ -1,7 +1,7 @@
 # 🔌 Px2 Connect Browser Extension
 
 <div align="center">
-  <img src="PF8.png" alt="Px2 Connect Logo" width="200"/>
+  <img src="PF8-removebg-preview.png" alt="Px2 Connect Logo" width="200"/>
 </div>
 
 ## 🌟 Features

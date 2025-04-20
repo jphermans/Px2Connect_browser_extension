@@ -15,18 +15,14 @@ jobs:
 
       - name: Package Extension
         run: |
-          # Create a clean directory for the extension files
-          mkdir extension
-          # Copy only the necessary files
-          cp manifest.json extension/
-          cp background.js extension/
-          cp options.html extension/
-          cp options.js extension/
-          cp popup.html extension/
-          cp popup.js extension/
-          cp PF8.png extension/
-          # Create the zip file from the clean directory
-          cd extension && zip -r ../px2-connect.zip *
+          # Create a temporary directory for extension files
+          mkdir temp_extension
+          # Copy only the required files
+          cp manifest.json background.js options.html options.js popup.html popup.js PF8.png temp_extension/
+          # Create the zip file
+          cd temp_extension
+          zip -r ../px2-connect.zip *
+          cd ..
 
       - name: Upload Extension Package
         if: github.event_name == 'release'

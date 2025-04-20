@@ -13,6 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Update manifest version
+        if: github.event_name == 'release'
+        run: |
+          # Get version from release tag (remove 'v' prefix)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          # Update version in manifest.json
+          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" manifest.json
+
       - name: Package Extension
         run: |
           # Create zip file exactly like our working local version

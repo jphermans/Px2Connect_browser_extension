@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeRadios = document.getElementsByName('theme');
   const saveButton = document.getElementById('save');
   const versionSpan = document.getElementById('version');
+  const checkUpdateButton = document.getElementById('checkUpdate');
+  const updateStatus = document.getElementById('updateStatus');
 
   // Display version
   const manifest = chrome.runtime.getManifest();
@@ -103,4 +105,31 @@ document.addEventListener('DOMContentLoaded', () => {
       return hostnamePattern.test(address);
     }
   }
+
+  // Handle manual update check
+  checkUpdateButton.addEventListener('click', () => {
+    updateStatus.textContent = 'Checking for updates...';
+    chrome.runtime.sendMessage({ action: 'checkForUpdates' }, response => {
+      if (chrome.runtime.lastError) {
+        updateStatus.textContent = 'Error checking for updates';
+        return;
+      }
+      
+      chrome.storage.sync.get(['updateAvailable', 'latestVersion'], (result) => {
+        if (result.updateAvailable) {
+          updateStatus.textContent = `New version ${result.latestVersion} available!`;
+          updateStatus.style.color = '#2563eb';
+        } else {
+          updateStatus.textContent = 'You have the latest version';
+          updateStatus.style.color = '#10B981';
+        }
+        
+        // Clear status message after 5 seconds
+        setTimeout(() => {
+          updateStatus.textContent = '';
+          updateStatus.style.color = '';
+        }, 5000);
+      });
+    });
+  });
 });

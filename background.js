@@ -14,6 +14,15 @@ chrome.runtime.onInstalled.addListener(details => {
   });
 });
 
+// Listen for messages from other parts of the extension
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'checkForUpdates') {
+    checkForUpdates();
+    sendResponse({ status: 'checking' });
+  }
+  return true; // Keep the message channel open for async response
+});
+
 // Listen for the alarm
 chrome.alarms.onAlarm.addListener(alarm => {
   if (alarm.name === 'update-check') {

@@ -95,6 +95,31 @@
       margin-top: 20px;
       font-size: 14px;
     }
+    .developer-info {
+      text-align: center;
+      color: #9CA3AF;
+      margin-top: 10px;
+      font-size: 14px;
+      font-style: italic;
+    }
+    .update-check {
+      text-align: center;
+      margin-top: 15px;
+    }
+    #checkUpdate {
+      background-color: #2563eb;
+      border-color: #1d4ed8;
+    }
+    #checkUpdate:hover {
+      background-color: #1d4ed8;
+    }
+    .update-status {
+      margin-top: 10px;
+      text-align: center;
+      color: #9CA3AF;
+      font-size: 14px;
+      min-height: 20px;
+    }
   </style>
 </head>
 <body>
@@ -140,7 +165,12 @@
       </div>
     </div>
     <button id="save">Save</button>
+    <div class="update-check">
+      <button id="checkUpdate">Check for Updates</button>
+      <div id="updateStatus" class="update-status"></div>
+    </div>
     <div class="version-info">Version <span id="version"></span></div>
+    <div class="developer-info">Developed by JPHsystems</div>
   </div>
   <script src="options.js"></script>
 </body>

@@ -10,6 +10,7 @@
 - 🎯 Default IP (169.254.1.1) connection
 - ✨ Custom IP or hostname support
 - 🎨 Theme selection (Flat Dark or White)
+- 🔄 Automatic update notifications
 - 💼 Easy-to-use options page
 
 ## 📥 Installation
@@ -61,6 +62,17 @@ The extension supports two themes for the PX2 interface:
 - **White**: A clean light theme
 
 The selected theme will be applied automatically when opening any PX2 interface.
+
+### Automatic Updates
+The extension checks for new versions:
+- When first installed
+- Every 24 hours automatically
+- Each time you open the popup
+
+When a new version is available:
+1. A blue notification banner will appear at the top of the popup
+2. Click the banner to go to the download page
+3. Download and install the new version following the installation steps
 
 ## 🔄 Updates
 

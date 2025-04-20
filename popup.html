@@ -54,6 +54,29 @@
       text-align: center;
       margin: 0;
     }
+    .rescue-mode {
+      margin: 10px 0;
+      padding: 8px;
+      background: #4B5563;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rescue-mode input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .rescue-mode label {
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .rescue-info {
+      font-size: 12px;
+      color: #9CA3AF;
+      margin: 4px 0 8px 24px;
+    }
   </style>
 </head>
 <body>
@@ -63,6 +86,13 @@
   </div>
   <div class="image-container">
     <img id="mainImage" src="PF8-removebg-preview.png" alt="Px2 platform connect">
+  </div>
+  <div class="rescue-mode">
+    <input type="checkbox" id="rescueMode">
+    <label for="rescueMode">Enable Rescue Mode</label>
+  </div>
+  <div id="rescueInfo" class="rescue-info" style="display: none;">
+    Uses /cgi-bin/upgrade.cgi path for recovery
   </div>
   <button id="defaultIp">Open 169.254.1.1</button>
   <button id="customIp">Open Custom IP</button>

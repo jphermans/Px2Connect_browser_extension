@@ -59,6 +59,13 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
      - Manual update check button
      - Update status feedback
 
+### Rescue Mode
+The extension includes a special rescue mode for device recovery:
+- Only available when your PC is in the 169.254.1.x IP range
+- Appears as a checkbox in the popup when available
+- When enabled, connects to http://169.254.1.1/cgi-bin/upgrade.cgi
+- Use this mode when you need to recover or upgrade a device in recovery state
+
 ### Themes
 The extension supports two themes for the PX2 interface:
 - **Flat Dark**: A modern dark theme (default)

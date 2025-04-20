@@ -1,10 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const defaultIpBtn = document.getElementById('defaultIp');
   const customIpBtn = document.getElementById('customIp');
+  const updateBanner = document.getElementById('updateBanner');
 
-  chrome.storage.sync.get(['ipType', 'customIp', 'addressType', 'theme'], (result) => {
+  // Check for updates
+  chrome.storage.sync.get(['updateAvailable', 'updateUrl', 'ipType', 'customIp', 'addressType', 'theme'], (result) => {
     const theme = result.theme || 'flatdark';
     const themeParam = `?theme=${theme}`;
+
+    // Show update banner if update is available
+    if (result.updateAvailable && result.updateUrl) {
+      updateBanner.style.display = 'block';
+      updateBanner.addEventListener('click', () => {
+        chrome.tabs.create({ url: result.updateUrl });
+        window.close();
+      });
+    }
 
     if (result.ipType !== 'custom' || !result.customIp) {
       // If no custom address is saved, immediately open default IP and close popup

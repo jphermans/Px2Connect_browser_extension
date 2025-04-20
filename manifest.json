@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ServicePort Tab Opener",
-  "version": "1.0",
+  "version": "1.0.5",
   "description": "Opens a new tab to configurable IP address",
   "action": {
     "default_icon": {
@@ -11,7 +11,13 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs", "storage"],
+  "permissions": ["tabs", "storage", "alarms"],
+  "host_permissions": [
+    "https://api.github.com/"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "options_page": "options.html",
   "icons": {
     "16": "PF8.png",

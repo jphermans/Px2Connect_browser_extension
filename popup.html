@@ -37,10 +37,29 @@
       margin: 0 0 10px 0;
       color: white;
     }
+    .update-banner {
+      background-color: #2563eb;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      display: none;
+      cursor: pointer;
+    }
+    .update-banner:hover {
+      background-color: #1d4ed8;
+    }
+    .update-text {
+      font-size: 14px;
+      text-align: center;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
   <h2>Px2 connect</h2>
+  <div id="updateBanner" class="update-banner">
+    <p class="update-text">🔄 New version available! Click to update</p>
+  </div>
   <div class="image-container">
     <img id="mainImage" src="pf8.png" alt="Px2 connect" width="100" height="50">
   </div>

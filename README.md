@@ -55,6 +55,9 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
    - Theme
      - Flat Dark (default)
      - White
+   - Updates
+     - Manual update check button
+     - Update status feedback
 
 ### Themes
 The extension supports two themes for the PX2 interface:
@@ -66,13 +69,20 @@ The selected theme will be applied automatically when opening any PX2 interface.
 ### Automatic Updates
 The extension checks for new versions:
 - When first installed
-- Every 24 hours automatically
+- Every 6 hours automatically
 - Each time you open the popup
+- Manually through the options page
 
 When a new version is available:
 1. A blue notification banner will appear at the top of the popup
-2. Click the banner to go to the download page
-3. Download and install the new version following the installation steps
+2. A desktop notification will be shown
+3. Click the banner to go to the download page
+4. Download and install the new version following the installation steps
+
+You can also check for updates manually:
+1. Open the options page
+2. Click the "Check for Updates" button
+3. The status will show if you're up to date or if a new version is available
 
 ## 🔄 Updates
 
@@ -95,5 +105,6 @@ Feel free to:
 ---
 
 <div align="center">
-  <i>Built with ❤️ for easy device access</i>
+  <i>Built with ❤️ for easy device access</i><br>
+  <i>Developed by JPHsystems</i>
 </div>

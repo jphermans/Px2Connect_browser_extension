@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Px2 connect Options</title>
+  <style>
+    body {
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #343f48;
+      color: white;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+    }
+    .option-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding: 8px 0;
+    }
+    input[type="radio"] {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    #customIp {
+      margin-top: 12px;
+      padding: 8px;
+      width: 200px;
+      background: #4B5563;
+      border: 1px solid #6B7280;
+      color: white;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    #customIp:focus {
+      outline: none;
+      border-color: #9CA3AF;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4B5563;
+      color: white;
+      border: 1px solid #6B7280;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #6B7280;
+    }
+    h2 {
+      color: white;
+      margin-top: 0;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .custom-input-group {
+      margin-top: 12px;
+      margin-left: 32px;
+    }
+    .address-type {
+      margin-bottom: 12px;
+    }
+    .address-type label {
+      display: inline-block;
+      margin-right: 20px;
+      padding: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Px2 connect Configuration</h1>
+    <div class="image-container">
+      <img id="mainImage" src="pf8.png" alt="Px2 connect" width="200" height="120">
+    </div>
+    <div class="option-group">
+      <label>
+        <input type="radio" name="ipType" value="default" checked>
+        Use default IP (169.254.1.1)
+      </label>
+      <label>
+        <input type="radio" name="ipType" value="custom">
+        Use custom address
+      </label>
+      <div class="custom-input-group">
+        <div class="address-type">
+          <label>
+            <input type="radio" name="addressType" value="ip" checked disabled>
+            IP Address
+          </label>
+          <label>
+            <input type="radio" name="addressType" value="hostname" disabled>
+            Hostname
+          </label>
+        </div>
+        <input type="text" id="customIp" placeholder="Enter IP address or hostname" disabled>
+      </div>
+    </div>
+    <button id="save">Save</button>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

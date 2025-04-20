@@ -1,0 +1,34 @@
+name: Package Extension
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Package Extension
+        run: |
+          zip -r px2-connect.zip . -x "*.git*" "*.github*"
+
+      - name: Upload Extension Package
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./px2-connect.zip
+          asset_name: px2-connect.zip
+          asset_content_type: application/zip
+
+      - name: Upload Artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v3
+        with:
+          name: px2-connect
+          path: px2-connect.zip

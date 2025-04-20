@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 250px;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      background-color: #343f48;  /* Dark gray/slate background color */
+      color: white;
+    }
+    .image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    button {
+      width: 100%;
+      margin: 5px 0;
+      padding: 8px;
+      cursor: pointer;
+      border: 1px solid #4B5563;  /* Darker border for buttons */
+      border-radius: 4px;
+      background: #4B5563;  /* Slightly lighter gray for buttons */
+      color: white;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background: #6B7280;  /* Lighter gray on hover */
+    }
+    h3 {
+      text-align: center;
+      margin: 0 0 10px 0;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Px2 connect</h2>
+  <div class="image-container">
+    <img id="mainImage" src="pf8.png" alt="Px2 connect" width="100" height="50">
+  </div>
+  <button id="defaultIp">Open 169.254.1.1</button>
+  <button id="customIp">Open Custom IP</button>
+  <script src="popup.js"></script>
+</body>
+</html>

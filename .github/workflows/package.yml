@@ -24,7 +24,7 @@ jobs:
       - name: Package Extension
         run: |
           # Create zip file exactly like our working local version
-          zip -r px2-connect.zip manifest.json background.js options.html options.js popup.html popup.js PF8.png
+          zip -r px2-connect.zip manifest.json background.js options.html options.js popup.html popup.js PF8-removebg-preview.png
 
       - name: Upload Extension Package
         if: github.event_name == 'release'

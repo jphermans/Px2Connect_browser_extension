@@ -1,14 +1,14 @@
 {
   "manifest_version": 3,
   "name": "ServicePort Tab Opener",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Opens a new tab to configurable IP address",
   "action": {
     "default_icon": {
-      "16": "PF8.png",
-      "32": "PF8.png",
-      "48": "PF8.png",
-      "128": "PF8.png"
+      "16": "PF8-removebg-preview.png",
+      "32": "PF8-removebg-preview.png",
+      "48": "PF8-removebg-preview.png",
+      "128": "PF8-removebg-preview.png"
     },
     "default_popup": "popup.html"
   },
@@ -21,9 +21,9 @@
   },
   "options_page": "options.html",
   "icons": {
-    "16": "PF8.png",
-    "32": "PF8.png",
-    "48": "PF8.png",
-    "128": "PF8.png"
+    "16": "PF8-removebg-preview.png",
+    "32": "PF8-removebg-preview.png",
+    "48": "PF8-removebg-preview.png",
+    "128": "PF8-removebg-preview.png"
   }
 }

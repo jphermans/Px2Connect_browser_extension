@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const addressTypeRadios = document.getElementsByName('addressType');
   const themeRadios = document.getElementsByName('theme');
   const saveButton = document.getElementById('save');
+  const versionSpan = document.getElementById('version');
+
+  // Display version
+  const manifest = chrome.runtime.getManifest();
+  versionSpan.textContent = manifest.version;
 
   // Load saved settings
   chrome.storage.sync.get(['ipType', 'customIp', 'addressType', 'theme'], (result) => {

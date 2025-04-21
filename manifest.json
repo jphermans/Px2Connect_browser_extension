@@ -12,7 +12,15 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs", "storage", "alarms", "notifications", "management", "commands"],
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "notifications",
+    "management",
+    "commands",
+    "system.network"
+  ],
   "host_permissions": [
     "https://api.github.com/"
   ],
@@ -46,7 +54,6 @@
       "description": "Toggle rescue mode"
     }
   },
-  "system.network": true,
   "background": {
     "service_worker": "background.js",
     "type": "module"

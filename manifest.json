@@ -38,13 +38,6 @@
       },
       "description": "Open second custom address"
     },
-    "open-custom-3": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+4",
-        "mac": "Command+Shift+4"
-      },
-      "description": "Open third custom address"
-    },
     "toggle-rescue": {
       "suggested_key": {
         "default": "Ctrl+Shift+R",

@@ -45,6 +45,15 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
    - Default IP (169.254.1.1)
    - Your configured custom IP addresses or hostnames
 
+### Keyboard Shortcuts
+The extension provides the following keyboard shortcuts:
+- Ctrl+Shift+1 (Command+Shift+1 on Mac) - Open default IP address
+- Ctrl+Shift+2 (Command+Shift+2 on Mac) - Open first custom address
+- Ctrl+Shift+3 (Command+Shift+3 on Mac) - Open second custom address
+- Ctrl+Shift+R (Command+Shift+R on Mac) - Toggle rescue mode
+
+Note: Due to Chrome's limitations, the extension supports a maximum of 4 keyboard shortcuts. Additional custom addresses can be accessed through the popup interface.
+
 ### Configuration
 1. Right-click the extension icon
 2. Select "Options"

@@ -21,10 +21,12 @@ jobs:
       - name: Set version from input or tag
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            VERSION=${{ github.event.inputs.release_tag }}
+            RAW_VERSION=${{ github.event.inputs.release_tag }}
           else
-            VERSION=${GITHUB_REF#refs/tags/v}
+            RAW_VERSION=${GITHUB_REF#refs/tags/}
           fi
+
+          VERSION="${RAW_VERSION#v}"  # Strip leading 'v' if present
           echo "VERSION=${VERSION:-1.0.0}" >> $GITHUB_ENV
 
       - name: Validate manifest.json

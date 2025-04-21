@@ -1,8 +1,5 @@
 name: Package Extension
 
-// This workflow packages the extension and creates a release on GitHub.
-// It can be triggered manually or automatically when a new tag is created.
-
 on:
   release:
     types: [created]

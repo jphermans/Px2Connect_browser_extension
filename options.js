@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const customIpInput = document.getElementById('customIp');
   const radioButtons = document.getElementsByName('ipType');
   const addressTypeRadios = document.getElementsByName('addressType');
   const themeRadios = document.getElementsByName('theme');
@@ -7,15 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const versionSpan = document.getElementById('version');
   const checkUpdateButton = document.getElementById('checkUpdate');
   const updateStatus = document.getElementById('updateStatus');
-
-  // Display version
-  const manifest = chrome.runtime.getManifest();
-  versionSpan.textContent = manifest.version;
+  const addressList = document.getElementById('addressList');
+  const addAddressButton = document.getElementById('addAddress');
 
   // Load saved settings
-  chrome.storage.sync.get(['ipType', 'customIp', 'addressType', 'theme'], (result) => {
+  chrome.storage.sync.get(['ipType', 'addresses', 'addressType', 'theme'], (result) => {
     const ipType = result.ipType || 'default';
-    const customIp = result.customIp || '';
+    const addresses = result.addresses || [];
     const addressType = result.addressType || 'ip';
     const theme = result.theme || 'flatdark';
     
@@ -29,64 +26,110 @@ document.addEventListener('DOMContentLoaded', () => {
     themeRadios.forEach(radio => {
       radio.checked = radio.value === theme;
     });
-    customIpInput.value = customIp;
-    customIpInput.disabled = ipType === 'default';
-    updatePlaceholder();
+
+    addAddressButton.disabled = ipType === 'default';
+    
+    // Populate saved addresses
+    addresses.forEach(addr => addAddressEntry(addr));
+    updateAddButton();
   });
 
   // Handle radio button changes
   radioButtons.forEach(radio => {
     radio.addEventListener('change', (e) => {
       const isCustom = e.target.value === 'custom';
-      customIpInput.disabled = !isCustom;
-      addressTypeRadios.forEach(radio => {
-        radio.disabled = !isCustom;
-      });
-      updatePlaceholder();
+      addressTypeRadios.forEach(radio => radio.disabled = !isCustom);
+      addAddressButton.disabled = !isCustom;
+      if (!isCustom) {
+        // Clear address list when switching to default
+        addressList.innerHTML = '';
+      } else if (addressList.children.length === 0) {
+        // Add one empty address field when switching to custom
+        addAddressEntry('');
+      }
+      updateAddButton();
     });
   });
 
   // Handle address type changes
   addressTypeRadios.forEach(radio => {
     radio.addEventListener('change', () => {
-      updatePlaceholder();
+      updatePlaceholders();
     });
   });
 
-  function updatePlaceholder() {
+  // Add address button
+  addAddressButton.addEventListener('click', () => {
+    addAddressEntry('');
+    updateAddButton();
+  });
+
+  function addAddressEntry(value) {
+    // Check for duplicates before adding
+    const existingAddresses = Array.from(addressList.querySelectorAll('input')).map(input => input.value);
+    if (value && existingAddresses.includes(value)) {
+      alert('This address already exists in the list!');
+      return;
+    }
+
+    const entry = document.createElement('div');
+    entry.className = 'address-entry';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'customIp';
+    input.value = value;
+    input.placeholder = getPlaceholder();
+    
+    // Add input event listener to check for duplicates while typing
+    input.addEventListener('input', (e) => {
+      const currentValue = e.target.value.trim();
+      const otherAddresses = Array.from(addressList.querySelectorAll('input'))
+        .filter(inp => inp !== e.target)
+        .map(inp => inp.value.trim());
+      
+      if (currentValue && otherAddresses.includes(currentValue)) {
+        input.style.borderColor = '#dc2626';
+        input.title = 'This address already exists in the list';
+      } else {
+        input.style.borderColor = '';
+        input.title = '';
+      }
+    });
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-address';
+    removeBtn.textContent = 'Remove';
+    removeBtn.onclick = () => {
+      entry.remove();
+      updateAddButton();
+    };
+    
+    entry.appendChild(input);
+    entry.appendChild(removeBtn);
+    addressList.appendChild(entry);
+  }
+
+  function updateAddButton() {
+    addAddressButton.disabled = 
+      document.querySelector('input[name="ipType"]:checked').value === 'default' ||
+      addressList.children.length >= 5;
+  }
+
+  function updatePlaceholders() {
+    const placeholder = getPlaceholder();
+    addressList.querySelectorAll('input').forEach(input => {
+      input.placeholder = placeholder;
+    });
+  }
+
+  function getPlaceholder() {
     const addressType = document.querySelector('input[name="addressType"]:checked').value;
-    customIpInput.placeholder = addressType === 'ip' 
+    return addressType === 'ip' 
       ? 'Enter IP address (e.g., 192.168.1.1)' 
       : 'Enter hostname (e.g., device.local)';
   }
 
-  // Handle save button
-  saveButton.addEventListener('click', () => {
-    const ipType = document.querySelector('input[name="ipType"]:checked').value;
-    const addressType = document.querySelector('input[name="addressType"]:checked').value;
-    const theme = document.querySelector('input[name="theme"]:checked').value;
-    const customIp = customIpInput.value;
-
-    if (ipType === 'custom' && !isValidAddress(customIp, addressType)) {
-      alert(addressType === 'ip' 
-        ? 'Please enter a valid IP address' 
-        : 'Please enter a valid hostname');
-      return;
-    }
-
-    chrome.storage.sync.set({
-      ipType: ipType,
-      customIp: customIp,
-      addressType: addressType,
-      theme: theme
-    }, () => {
-      alert('Settings saved!');
-      // Close the options tab
-      window.close();
-    });
-  });
-
-  // Address validation helper
   function isValidAddress(address, type) {
     if (!address) return false;
     
@@ -100,13 +143,51 @@ document.addEventListener('DOMContentLoaded', () => {
         return num >= 0 && num <= 255;
       });
     } else {
-      // Hostname validation (basic rules)
       const hostnamePattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       return hostnamePattern.test(address);
     }
   }
 
-  // Handle manual update check
+  // Handle save button
+  saveButton.addEventListener('click', () => {
+    const ipType = document.querySelector('input[name="ipType"]:checked').value;
+    const addressType = document.querySelector('input[name="addressType"]:checked').value;
+    const theme = document.querySelector('input[name="theme"]:checked').value;
+    
+    const addresses = Array.from(addressList.querySelectorAll('input')).map(input => input.value.trim());
+    
+    // Check for duplicates before saving
+    const uniqueAddresses = new Set(addresses.filter(addr => addr !== ''));
+    if (uniqueAddresses.size !== addresses.filter(addr => addr !== '').length) {
+      alert('Please remove duplicate addresses before saving');
+      return;
+    }
+
+    if (ipType === 'custom') {
+      const invalidAddresses = addresses.filter(addr => !isValidAddress(addr, addressType));
+      if (invalidAddresses.length > 0) {
+        alert(addressType === 'ip' 
+          ? 'Please enter valid IP addresses' 
+          : 'Please enter valid hostnames');
+        return;
+      }
+    }
+
+    chrome.storage.sync.set({
+      ipType: ipType,
+      addresses: addresses,
+      addressType: addressType,
+      theme: theme
+    }, () => {
+      alert('Settings saved!');
+      window.close();
+    });
+  });
+
+  // Display version and handle update check
+  const manifest = chrome.runtime.getManifest();
+  versionSpan.textContent = manifest.version;
+
   checkUpdateButton.addEventListener('click', () => {
     updateStatus.textContent = 'Checking for updates...';
     chrome.runtime.sendMessage({ action: 'checkForUpdates' }, response => {
@@ -124,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
           updateStatus.style.color = '#25EB3FFF';
         }
         
-        // Clear status message after 5 seconds
         setTimeout(() => {
           updateStatus.textContent = '';
           updateStatus.style.color = '';

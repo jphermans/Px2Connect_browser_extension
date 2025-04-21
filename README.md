@@ -8,7 +8,8 @@
 
 - 🚀 Quick access to your PX2 device
 - 🎯 Default IP (169.254.1.1) connection
-- ✨ Custom IP or hostname support
+- ✨ Support for up to 5 custom IP addresses or hostnames
+- 🛡️ Duplicate address prevention
 - 🎨 Theme selection (Flat Dark or White)
 - 🔄 Automatic update notifications
 - 💼 Easy-to-use options page
@@ -42,7 +43,7 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
 1. Click the extension icon in your browser toolbar
 2. Choose between:
    - Default IP (169.254.1.1)
-   - Custom IP or hostname
+   - Your configured custom IP addresses or hostnames
 
 ### Configuration
 1. Right-click the extension icon
@@ -50,8 +51,10 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
 3. Configure your preferences:
    - Connection Method
      - Default IP
-     - Custom IP address
-     - Custom hostname
+     - Custom IP addresses/hostnames (up to 5)
+       - Add/Remove addresses dynamically
+       - Automatic duplicate detection
+       - Real-time validation
    - Theme
      - Flat Dark (default)
      - White

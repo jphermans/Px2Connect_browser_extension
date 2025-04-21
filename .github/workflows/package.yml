@@ -41,12 +41,12 @@ jobs:
         run: |
           zip -r px2-connect.zip \
             manifest.json \
-            src/background/background.js \
-            src/options/options.html \
-            src/options/options.js \
-            src/popup/popup.html \
-            src/popup/popup.js \
-            src/styles.css \
+            src/js/background.js \
+            src/html/options.html \
+            src/js/options.js \
+            src/html/popup.html \
+            src/js/popup.js \
+            src/css/styles.css \
             src/settings.ts \
             src/shortcuts.ts \
             src/chrome.d.ts \

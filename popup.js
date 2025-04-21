@@ -88,6 +88,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Show loading indicator
   loadingIndicator.style.display = 'block';
 
+  // Check for updates immediately when popup opens
+  chrome.runtime.sendMessage({ action: 'checkForUpdates' });
+
   // Check network interfaces with caching
   const networkResult = await checkNetworkInterfaces();
   await updateUI(networkResult);
@@ -107,7 +110,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         'addresses', 
         'addressType', 
         'theme', 
-        'updateCheckError'
+        'updateCheckError',
+        'latestVersion'
       ]);
 
       const theme = result.theme || 'flatdark';
@@ -121,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Show update banner if update is available
       if (result.updateAvailable && result.updateUrl) {
         updateBanner.style.display = 'block';
+        updateBanner.innerHTML = `<strong>New version ${result.latestVersion} available!</strong><br>Click here to update`;
         updateBanner.addEventListener('click', () => {
           chrome.tabs.create({ url: result.updateUrl });
           window.close();

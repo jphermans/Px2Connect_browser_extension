@@ -1,5 +1,5 @@
 // Update check configuration
-const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+const UPDATE_CHECK_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds
 const MANIFEST_VERSION = chrome.runtime.getManifest().version;
 const GITHUB_API_URL = 'https://api.github.com/repos/jphermans/Px2Connect_browser_extension/releases/latest';
 
@@ -34,8 +34,9 @@ chrome.runtime.onInstalled.addListener(async details => {
       console.log('Settings backed up to local storage');
     }
 
-    if (details.reason === 'install') {
-      // For fresh install, check if we have backup settings
+    // Handle both install and update cases
+    if (details.reason === 'install' || details.reason === 'update') {
+      // Check for backup settings
       const localBackup = await chrome.storage.local.get('backupSettings');
       if (localBackup.backupSettings) {
         console.log('Found backup settings:', localBackup.backupSettings);
@@ -52,19 +53,42 @@ chrome.runtime.onInstalled.addListener(async details => {
         await chrome.storage.sync.set(settingsToRestore);
         console.log('Settings restored from backup');
 
-        // Show notification about old version
-        chrome.notifications.create('update-instructions', {
-          type: 'basic',
-          iconUrl: 'PF8-removebg-preview.png',
-          title: 'Extension Update: Action Required',
-          message: '1. Settings have been restored\n2. Please go to your browser extensions (chrome://extensions/)\n3. Remove the old version of Px2 Connect',
-          priority: 2,
-          requireInteraction: true // Notification will persist until user clicks it
-        });
+        // Show appropriate notification based on install type
+        if (details.reason === 'update') {
+          const previousVersion = details.previousVersion || 'unknown';
+          showNotification('update-complete', {
+            title: 'Px2 Connect Updated Successfully',
+            message: `Updated from v${previousVersion} to v${MANIFEST_VERSION}\n\nTo complete the update:\n1. Go to your browser extensions (chrome://extensions/)\n2. Remove the old version of Px2 Connect\n\nYour settings have been preserved.`,
+            buttons: [
+              { title: 'Open Extensions Page' },
+              { title: 'Got It' }
+            ]
+          });
+        } else {
+          showNotification('install-complete', {
+            title: 'Px2 Connect Installed Successfully',
+            message: 'Settings have been restored from your previous installation.\n\nPlease remove the old version of Px2 Connect from your extensions page.',
+            buttons: [
+              { title: 'Open Extensions Page' },
+              { title: 'Got It' }
+            ]
+          });
+        }
       } else {
         // No backup found, use defaults
         await chrome.storage.sync.set(DEFAULT_SETTINGS);
         console.log('No backup found, using default settings');
+
+        if (details.reason === 'install') {
+          showNotification('install-complete', {
+            title: 'Px2 Connect Installed Successfully',
+            message: 'The extension has been installed with default settings.\n\nClick to configure your preferences.',
+            buttons: [
+              { title: 'Open Settings' },
+              { title: 'Got It' }
+            ]
+          });
+        }
       }
     }
 
@@ -109,6 +133,19 @@ chrome.alarms.onAlarm.addListener(alarm => {
   }
 });
 
+// Function to show notifications
+function showNotification(id, options) {
+  chrome.notifications.create(id, {
+    type: 'basic',
+    iconUrl: 'PF8-removebg-preview.png',
+    title: options.title,
+    message: options.message,
+    priority: 2,
+    requireInteraction: true, // Notification will persist until user clicks it
+    buttons: options.buttons || []
+  });
+}
+
 // Function to check for updates
 async function checkForUpdates() {
   try {
@@ -139,7 +176,7 @@ async function checkForUpdates() {
       });
 
       // Store update info
-      chrome.storage.sync.set({ 
+      await chrome.storage.sync.set({ 
         updateAvailable: true,
         latestVersion: latestVersion,
         updateUrl: data.html_url,
@@ -148,17 +185,17 @@ async function checkForUpdates() {
       });
 
       // Show update notification with clear instructions
-      chrome.notifications.create('update-available', {
-        type: 'basic',
-        iconUrl: 'PF8-removebg-preview.png',
+      showNotification('update-available', {
         title: 'Px2 Connect Update Available',
         message: `Version ${latestVersion} is available!\n\nTo update:\n1. Click this notification\n2. Download & install the new version\n3. Remove the old version from extensions page`,
-        priority: 2,
-        requireInteraction: true // Notification will persist until user clicks it
+        buttons: [
+          { title: 'Update Now' },
+          { title: 'Remind Me Later' }
+        ]
       });
     } else {
       console.log('Extension is up to date');
-      chrome.storage.sync.set({ 
+      await chrome.storage.sync.set({ 
         updateAvailable: false,
         lastUpdateCheck: Date.now(),
         updateCheckError: null
@@ -189,6 +226,28 @@ function isNewerVersion(latestVersion, currentVersion) {
   return false; // Versions are equal
 }
 
+// Handle notification button clicks
+chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
+  if (notificationId === 'update-available') {
+    if (buttonIndex === 0) { // "Update Now"
+      chrome.storage.sync.get(['updateUrl'], (result) => {
+        if (result.updateUrl) {
+          chrome.tabs.create({ url: result.updateUrl });
+        }
+      });
+    }
+    // If buttonIndex is 1 ("Remind Me Later"), just close the notification
+  } else if (notificationId === 'update-complete' || notificationId === 'install-complete') {
+    if (buttonIndex === 0) {
+      if (notificationId === 'update-complete' || notificationId === 'install-complete') {
+        chrome.tabs.create({ url: 'chrome://extensions/' });
+      } else {
+        chrome.runtime.openOptionsPage();
+      }
+    }
+  }
+});
+
 // Add notification click handler
 chrome.notifications.onClicked.addListener((notificationId) => {
   if (notificationId === 'update-available') {
@@ -198,7 +257,7 @@ chrome.notifications.onClicked.addListener((notificationId) => {
         chrome.tabs.create({ url: result.updateUrl });
       }
     });
-  } else if (notificationId === 'update-instructions') {
+  } else if (notificationId === 'update-complete' || notificationId === 'install-complete') {
     // Open the extensions page when instructions notification is clicked
     chrome.tabs.create({ url: 'chrome://extensions/' });
   }

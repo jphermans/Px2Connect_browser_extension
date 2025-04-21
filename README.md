@@ -208,5 +208,5 @@ Feel free to:
 
 <div align="center">
   <i>Built with ❤️ for easy device access</i><br>
-  <i>© 2024 JPHsystems</i>
+  <i>© 2025 JPHsystems</i>
 </div>

@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateStatus = document.getElementById('updateStatus');
   const addressList = document.getElementById('addressList');
   const addAddressButton = document.getElementById('addAddress');
+  const showWelcomeButton = document.getElementById('showWelcome');
+
+  // Show Welcome button handler
+  showWelcomeButton.addEventListener('click', () => {
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('src/html/welcome.html')
+    });
+  });
 
   // Load saved settings
   chrome.storage.sync.get(['ipType', 'addresses', 'addressType', 'theme'], (result) => {
@@ -215,21 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
           updateStatus.style.color = '';
         }, 5000);
       });
-    });
-  });
-
-  // Add welcome button to version info section
-  const versionInfo = document.querySelector('.version-info');
-  const welcomeButton = document.createElement('button');
-  welcomeButton.textContent = 'Show Welcome Guide';
-  welcomeButton.id = 'showWelcome';
-  welcomeButton.style.marginTop = '10px';
-  versionInfo.appendChild(welcomeButton);
-
-  // Welcome button click handler
-  document.getElementById('showWelcome').addEventListener('click', () => {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL('src/html/welcome.html')
     });
   });
 });

@@ -1,0 +1,48 @@
+.error-message {
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #b91c1c;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  display: none;
+}
+
+.loading-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 1000;
+}
+
+.network-message {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#updateBanner {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  color: white;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+#updateBanner:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+} 

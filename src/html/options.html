@@ -62,76 +62,80 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      margin: 5px;
       font-size: 1.1em;
+      min-width: 150px;
+      transition: background-color 0.2s;
+      height: 48px;
+      line-height: 24px;
     }
     button:hover {
       background-color: #6B7684;
     }
+    #save {
+      background-color: #00a1e0;
+    }
+    #save:hover {
+      background-color: #0088c2;
+    }
+    #addAddress {
+      background-color: #059669;
+    }
+    #addAddress:hover {
+      background-color: #047857;
+    }
     .button-container {
       text-align: center;
       margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
     .address-container {
       margin: 10px 0;
     }
-    .address-input {
+    .address-entry {
       display: flex;
       align-items: center;
-      margin: 5px 0;
+      margin-bottom: 8px;
+      gap: 8px;
     }
-    .address-input input {
-      flex-grow: 1;
-      margin-right: 10px;
+    .address-entry input {
+      margin-top: 0;
     }
-    .remove-button {
-      background-color: #dc2626;
-      padding: 12px 20px;
+    .remove-address {
+      background: #dc2626;
+      padding: 4px 8px;
+      font-size: 14px;
+      height: 36px;
+      min-width: auto;
     }
-    .remove-button:hover {
-      background-color: #b91c1c;
+    .remove-address:hover {
+      background: #b91c1c;
     }
     .radio-group {
-      margin: 15px 0;
+      margin: 10px 0;
     }
     .radio-label {
       display: inline-block;
-      margin-right: 25px;
-      font-size: 1.1em;
-    }
-    .radio-label input[type="radio"] {
-      width: 16px;
-      height: 16px;
-      margin-right: 8px;
+      margin-right: 20px;
     }
     .version-info {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 20px;
       color: #9CA3AF;
-      font-size: 1.1em;
     }
     .update-status {
       text-align: center;
       margin-top: 10px;
       min-height: 20px;
-      font-size: 1.1em;
     }
     .developer-info {
       text-align: center;
       color: #9CA3AF;
       margin-top: 20px;
-      font-size: 1em;
+      font-size: 12px;
       font-style: italic;
-    }
-    #version {
-      display: block;
-      text-align: center;
-      margin: 10px 0;
-      font-size: 1.1em;
-    }
-    #checkUpdate {
-      display: block;
-      margin: 10px auto;
     }
   </style>
 </head>
@@ -168,7 +172,6 @@
       <div id="addressList" class="address-container">
         <!-- Address inputs will be added here -->
       </div>
-      <button id="addAddress" type="button">Add Address</button>
     </div>
 
     <div class="section">
@@ -185,14 +188,17 @@
 
     <div class="button-container">
       <button id="save" type="button">Save Settings</button>
-      <div class="version-info">
-        <span id="version"></span>
-        <button id="checkUpdate" type="button">Check for Updates</button>
-        <div id="updateStatus" class="update-status"></div>
-      </div>
+      <button id="addAddress" type="button">Add Address</button>
+      <button id="checkUpdate" type="button">Check for Updates</button>
+      <button id="showWelcome" type="button">Show Welcome</button>
     </div>
 
-    <div class="developer-info">Developed by JPHsystems © 2024</div>
+    <div class="version-info">
+      <span id="version"></span>
+      <div id="updateStatus" class="update-status"></div>
+    </div>
+
+    <div class="developer-info">Developed by JPHsystems © 2025</div>
   </div>
 
   <script src="../js/options.js"></script>

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ServicePort Tab Opener",
-  "version": "1.1.19",
+  "version": "1.1.20",
   "description": "Opens a new tab to configurable IP address",
   "action": {
     "default_icon": {
@@ -10,7 +10,8 @@
       "48": "src/images/PF8-removebg-preview.png",
       "128": "src/images/PF8-removebg-preview.png"
     },
-    "default_popup": "src/html/popup.html"
+    "default_popup": "src/html/popup.html",
+    "default_title": "ServicePort Tab Opener"
   },
   "permissions": [
     "tabs",
@@ -18,11 +19,11 @@
     "alarms",
     "notifications",
     "management",
-    "commands",
-    "system.network"
+    "commands"
   ],
   "host_permissions": [
-    "https://api.github.com/"
+    "https://api.github.com/",
+    "http://*/*"
   ],
   "commands": {
     "open-default": {
@@ -55,8 +56,7 @@
     }
   },
   "background": {
-    "service_worker": "src/js/background.js",
-    "type": "module"
+    "service_worker": "src/js/background.js"
   },
   "options_page": "src/html/options.html",
   "icons": {
@@ -66,7 +66,12 @@
     "128": "src/images/PF8-removebg-preview.png"
   },
   "web_accessible_resources": [{
-    "resources": ["src/html/welcome.html"],
+    "resources": [
+      "src/html/welcome.html",
+      "src/js/welcome.js",
+      "src/css/styles.css",
+      "src/images/*"
+    ],
     "matches": ["<all_urls>"]
   }]
 }

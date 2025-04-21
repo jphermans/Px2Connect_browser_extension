@@ -39,7 +39,7 @@ jobs:
 
       - name: Package Extension
         run: |
-          zip -r px2-connect.zip manifest.json background.js options.html options.js popup.html popup.js PF8-removebg-preview.png px2.png
+          zip -r px2-connect.zip manifest.json background.js options.html options.js popup.html popup.js PF8-removebg-preview.png px2.PNG
 
       - name: Create GitHub Release (for manual run)
         if: github.event_name == 'workflow_dispatch'

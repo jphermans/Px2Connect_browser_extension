@@ -63,6 +63,10 @@ const updateUI = debounce(async (result) => {
 }, 300);
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Set current year in developer info
+  const developerInfo = document.querySelector('.developer-info');
+  developerInfo.textContent = `Developed by JPHsystems © ${new Date().getFullYear()}`;
+
   const defaultIpBtn = document.getElementById('defaultIp');
   const addressList = document.getElementById('addressList');
   const updateBanner = document.getElementById('updateBanner');

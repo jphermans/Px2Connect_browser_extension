@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Set current year in developer info
+  const developerInfo = document.querySelector('.developer-info');
+  developerInfo.textContent = `Developed by JPHsystems © ${new Date().getFullYear()}`;
+
   const radioButtons = document.getElementsByName('ipType');
   const addressTypeRadios = document.getElementsByName('addressType');
   const themeRadios = document.getElementsByName('theme');

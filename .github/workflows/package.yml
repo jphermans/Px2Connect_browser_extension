@@ -27,9 +27,12 @@ jobs:
           fi
           echo "VERSION=${VERSION:-1.0.0}" >> $GITHUB_ENV
 
+      - name: Validate manifest.json
+        run: |
+          cat manifest.json | jq .
+
       - name: Update manifest version
         run: |
-          grep -q '"version":' manifest.json || echo '"version": "1.0.0",' >> manifest.json
           sed -i "s/\"version\": \".*\"/\"version\": \"${VERSION}\"/" manifest.json
 
       - name: Package Extension

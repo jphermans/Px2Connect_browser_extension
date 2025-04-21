@@ -10,6 +10,7 @@
       margin: 0 auto;
       background-color: #3A434C;
       color: white;
+      font-size: 14px;
     }
     .container {
       background-color: #3b4753;
@@ -21,6 +22,7 @@
       color: white;
       text-align: center;
       margin-bottom: 30px;
+      font-size: 2em;
     }
     .section {
       margin-bottom: 20px;
@@ -31,20 +33,23 @@
     .section h2 {
       margin-top: 0;
       color: white;
+      font-size: 1.4em;
     }
     label {
       display: block;
       margin: 10px 0;
       color: white;
+      font-size: 1.1em;
     }
     input[type="text"] {
       width: 100%;
-      padding: 8px;
+      padding: 10px;
       margin: 5px 0;
       border: 1px solid #6B7280;
       border-radius: 4px;
       background: #4B5563;
       color: white;
+      font-size: 1em;
     }
     input[type="text"]:focus {
       outline: none;
@@ -53,11 +58,12 @@
     button {
       background-color: #5A6470;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       margin: 5px;
+      font-size: 1.1em;
     }
     button:hover {
       background-color: #6B7684;
@@ -80,34 +86,52 @@
     }
     .remove-button {
       background-color: #dc2626;
-      padding: 8px 12px;
+      padding: 12px 20px;
     }
     .remove-button:hover {
       background-color: #b91c1c;
     }
     .radio-group {
-      margin: 10px 0;
+      margin: 15px 0;
     }
     .radio-label {
       display: inline-block;
-      margin-right: 20px;
+      margin-right: 25px;
+      font-size: 1.1em;
+    }
+    .radio-label input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
     }
     .version-info {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
       color: #9CA3AF;
+      font-size: 1.1em;
     }
     .update-status {
       text-align: center;
       margin-top: 10px;
       min-height: 20px;
+      font-size: 1.1em;
     }
     .developer-info {
       text-align: center;
       color: #9CA3AF;
       margin-top: 20px;
-      font-size: 12px;
+      font-size: 1em;
       font-style: italic;
+    }
+    #version {
+      display: block;
+      text-align: center;
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    #checkUpdate {
+      display: block;
+      margin: 10px auto;
     }
   </style>
 </head>
@@ -161,12 +185,11 @@
 
     <div class="button-container">
       <button id="save" type="button">Save Settings</button>
-    </div>
-
-    <div class="version-info">
-      Version: <span id="version"></span>
-      <button id="checkUpdate" type="button">Check for Updates</button>
-      <div id="updateStatus" class="update-status"></div>
+      <div class="version-info">
+        <span id="version"></span>
+        <button id="checkUpdate" type="button">Check for Updates</button>
+        <div id="updateStatus" class="update-status"></div>
+      </div>
     </div>
 
     <div class="developer-info">Developed by JPHsystems © 2024</div>

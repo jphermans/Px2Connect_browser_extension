@@ -5,10 +5,10 @@
   "description": "Opens a new tab to configurable IP address",
   "browser_action": {
     "default_icon": {
-      "16": "src/images/PF8-removebg-preview.png",
-      "32": "src/images/PF8-removebg-preview.png",
-      "48": "src/images/PF8-removebg-preview.png",
-      "128": "src/images/PF8-removebg-preview.png"
+      "16": "src/assets/PF8-removebg-preview.png",
+      "32": "src/assets/PF8-removebg-preview.png",
+      "48": "src/assets/PF8-removebg-preview.png",
+      "128": "src/assets/PF8-removebg-preview.png"
     },
     "default_popup": "src/html/popup.html"
   },
@@ -60,9 +60,9 @@
   },
   "options_page": "src/html/options.html",
   "icons": {
-    "16": "src/images/PF8-removebg-preview.png",
-    "32": "src/images/PF8-removebg-preview.png",
-    "48": "src/images/PF8-removebg-preview.png",
-    "128": "src/images/PF8-removebg-preview.png"
+    "16": "src/assets/PF8-removebg-preview.png",
+    "32": "src/assets/PF8-removebg-preview.png",
+    "48": "src/assets/PF8-removebg-preview.png",
+    "128": "src/assets/PF8-removebg-preview.png"
   }
 }

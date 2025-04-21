@@ -121,7 +121,7 @@ browser.alarms.onAlarm.addListener(alarm => {
 function showNotification(id, options) {
   browser.notifications.create(id, {
     type: 'basic',
-    iconUrl: '../images/PF8-removebg-preview.png',
+    iconUrl: '../assets/PF8-removebg-preview.png',
     title: options.title,
     message: options.message,
     priority: 2,

@@ -50,8 +50,8 @@ jobs:
             src/settings.ts \
             src/shortcuts.ts \
             src/chrome.d.ts \
-            src/assets/PF8-removebg-preview.png \
-            src/assets/px2.PNG \
+            src/images/PF8-removebg-preview.png \
+            src/images/px2.PNG \
             .github/workflows/package.yml \
             package.json \
             tsconfig.json

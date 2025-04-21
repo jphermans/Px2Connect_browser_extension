@@ -13,6 +13,39 @@
 - 🎨 Theme selection (Flat Dark or White)
 - 🔄 Automatic update notifications
 - 💼 Easy-to-use options page
+- 👋 Interactive welcome page
+- 🔐 Reliable settings migration
+- 📱 Responsive design across all pages
+
+## Recent Improvements
+
+### Welcome Experience
+- New welcome page introducing key features
+- Modern, consistent design matching the extension theme
+- Professional SVG icons for better visual clarity
+- Smooth transitions and hover effects
+- Automatic redirection to settings after first launch
+
+### Settings Management
+- Enhanced settings migration between updates
+- Automatic backup of user preferences
+- Reliable settings restoration after updates
+- Clear notifications about the update process
+- Improved error handling and recovery
+
+### Update System
+- Redesigned update notifications
+- Clear instructions for the update process
+- Persistent notifications for important updates
+- One-click access to new versions
+- Improved version comparison logic
+
+### Visual Consistency
+- Unified color scheme across all pages
+- Consistent styling for buttons and cards
+- Professional SVG icons replacing emojis
+- Improved typography and spacing
+- Better contrast for readability
 
 ## 📥 Installation
 
@@ -102,6 +135,13 @@ You can also check for updates manually:
 1. Open the options page
 2. Click the "Check for Updates" button
 3. The status will show if you're up to date or if a new version is available
+
+### First-Time Setup
+When you first install the extension:
+1. A welcome page introduces you to key features
+2. Click "Get Started" to access the options page
+3. Configure your preferred settings
+4. Start using the extension with your configuration
 
 ## 🔄 Updates
 

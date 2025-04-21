@@ -10,8 +10,15 @@ const DEFAULT_SETTINGS = {
   theme: 'flatdark',
   addresses: [],
   addressType: 'ip',
-  settingsVersion: SETTINGS_VERSION
+  settingsVersion: SETTINGS_VERSION,
+  hasSeenWelcome: false
 };
+
+function showWelcomeAlert() {
+  chrome.tabs.create({
+    url: chrome.runtime.getURL('src/html/welcome.html')
+  });
+}
 
 // Initialize update check on install/update
 chrome.runtime.onInstalled.addListener(async details => {
@@ -32,6 +39,11 @@ chrome.runtime.onInstalled.addListener(async details => {
         }
       });
       console.log('Current settings backed up to local storage');
+    }
+
+    // Show welcome message on fresh install
+    if (details.reason === 'install') {
+      showWelcomeAlert();
     }
 
     // Determine if we should restore settings
@@ -106,6 +118,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'checkForUpdates') {
     checkForUpdates();
     sendResponse({ status: 'checking' });
+  } else if (message.action === 'closeWelcomePage') {
+    if (sender.tab) {
+      chrome.tabs.remove(sender.tab.id);
+    }
   }
   return true; // Keep the message channel open for async response
 });

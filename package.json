@@ -1,0 +1,17 @@
+{
+  "name": "serviceport-tab-opener",
+  "version": "1.0.15",
+  "description": "Chrome extension for opening tabs to configurable IP addresses",
+  "scripts": {
+    "build": "tsc && cp manifest.json dist/ && cp *.html dist/ && cp *.css dist/ && cp *.png dist/",
+    "watch": "tsc -w",
+    "clean": "rm -rf dist",
+    "package": "npm run build && cd dist && zip -r ../serviceport-tab-opener.zip ."
+  },
+  "dependencies": {
+    "@types/chrome": "^0.0.260"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+} 

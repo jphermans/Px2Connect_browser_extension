@@ -118,3 +118,47 @@ Feel free to:
   <i>Built with ❤️ for easy device access</i><br>
   <i>Developed by JPHsystems</i>
 </div>
+
+## Development
+
+### Prerequisites
+
+- Node.js
+- TypeScript
+- Chrome/Edge browser
+
+### Building
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the extension:
+   ```bash
+   npm run build
+   ```
+
+### Packaging
+
+The extension is automatically packaged when:
+- A new release is created on GitHub
+- The package workflow is manually triggered
+
+The package includes the following files:
+- `manifest.json` - Extension configuration
+- `background.js` - Background service worker
+- `options.html` and `options.js` - Options page
+- `popup.html` and `popup.js` - Popup interface
+- `styles.css` - Styling
+- TypeScript files:
+  - `settings.ts` - Settings management
+  - `shortcuts.ts` - Keyboard shortcuts
+  - `chrome.d.ts` - TypeScript definitions
+- Assets:
+  - `PF8-removebg-preview.png` - Extension icon
+  - `px2.PNG` - Px2 device image
+- Configuration files:
+  - `package.json` - Project configuration
+  - `tsconfig.json` - TypeScript configuration
+  - `.github/workflows/package.yml` - GitHub Actions workflow

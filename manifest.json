@@ -12,12 +12,51 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs", "storage", "alarms", "notifications", "system.network"],
+  "permissions": ["tabs", "storage", "alarms", "notifications", "management", "commands"],
   "host_permissions": [
     "https://api.github.com/"
   ],
+  "commands": {
+    "open-default": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+1",
+        "mac": "Command+Shift+1"
+      },
+      "description": "Open default IP address"
+    },
+    "open-custom-1": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+2",
+        "mac": "Command+Shift+2"
+      },
+      "description": "Open first custom address"
+    },
+    "open-custom-2": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+3",
+        "mac": "Command+Shift+3"
+      },
+      "description": "Open second custom address"
+    },
+    "open-custom-3": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+4",
+        "mac": "Command+Shift+4"
+      },
+      "description": "Open third custom address"
+    },
+    "toggle-rescue": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+R",
+        "mac": "Command+Shift+R"
+      },
+      "description": "Toggle rescue mode"
+    }
+  },
+  "system.network": true,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "options_page": "options.html",
   "icons": {

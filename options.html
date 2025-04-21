@@ -61,8 +61,8 @@
     }
     button {
       padding: 10px 20px;
-    background-color: #5A6470;
-    color: white;
+      background-color: #5A6470;
+      color: white;
       border: 1px solid #6B7280;
       border-radius: 4px;
       cursor: pointer;
@@ -114,11 +114,11 @@
       margin-top: 15px;
     }
     #checkUpdate {
-    background-color: #dc2626;
-    border-color: #b91c1c;
+      background-color: #dc2626;
+      border-color: #b91c1c;
     }
     #checkUpdate:hover {
-    background-color: #b91c1c;
+      background-color: #b91c1c;
     }
     .update-status {
       margin-top: 10px;
@@ -126,6 +126,36 @@
       color: #9CA3AF;
       font-size: 14px;
       min-height: 20px;
+    }
+    .address-entry {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .address-entry input {
+      margin-top: 0;
+    }
+    .remove-address {
+      background: #dc2626;
+      padding: 4px 8px;
+      font-size: 14px;
+    }
+    .remove-address:hover {
+      background: #b91c1c;
+    }
+    .secondary-button {
+      background: transparent;
+      border: 1px dashed #6B7280;
+      padding: 6px 12px;
+      margin-top: 8px;
+    }
+    .secondary-button:hover {
+      background: #4B5563;
+    }
+    .secondary-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -156,7 +186,10 @@
               Hostname
             </label>
           </div>
-          <input type="text" id="customIp" placeholder="Enter IP address or hostname" disabled>
+          <div id="addressList">
+            <!-- Address entries will be added here dynamically -->
+          </div>
+          <button id="addAddress" class="secondary-button" disabled>Add Address</button>
         </div>
       </div>
       <div class="option-group">

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const defaultIpBtn = document.getElementById('defaultIp');
-  const customIpBtn = document.getElementById('customIp');
+  const addressList = document.getElementById('addressList');
   const updateBanner = document.getElementById('updateBanner');
   const rescueMode = document.getElementById('rescueMode');
   const rescueInfo = document.getElementById('rescueInfo');
@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     rescueInfo.style.display = rescueMode.checked ? 'block' : 'none';
   });
 
-  // Check for updates
-  chrome.storage.sync.get(['updateAvailable', 'updateUrl', 'ipType', 'customIp', 'addressType', 'theme'], (result) => {
+  // Check for updates and load settings
+  chrome.storage.sync.get(['updateAvailable', 'updateUrl', 'ipType', 'addresses', 'addressType', 'theme'], (result) => {
     const theme = result.theme || 'flatdark';
     const themeParam = `?theme=${theme}`;
 
@@ -44,18 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    if (result.ipType !== 'custom' || !result.customIp) {
-      // Don't auto-open when rescue mode is available
-      defaultIpBtn.textContent = 'Open 169.254.1.1';
-      customIpBtn.style.display = 'none';
-      return;
-    }
-
-    // Update custom button text to show the saved address
-    const addressType = result.addressType || 'ip';
-    const buttonLabel = addressType === 'ip' ? 'IP' : 'hostname';
-    customIpBtn.textContent = `Open ${buttonLabel}: ${result.customIp}`;
-
+    // Handle default IP button
     defaultIpBtn.addEventListener('click', () => {
       const baseUrl = 'http://169.254.1.1';
       const url = rescueMode.checked 
@@ -65,9 +54,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.close();
     });
 
-    customIpBtn.addEventListener('click', () => {
-      chrome.tabs.create({ url: `http://${result.customIp}${themeParam}` });
-      window.close();
-    });
+    // Create buttons for custom addresses if using custom mode
+    if (result.ipType === 'custom' && result.addresses && result.addresses.length > 0) {
+      const addressType = result.addressType || 'ip';
+      const buttonLabel = addressType === 'ip' ? 'IP' : 'hostname';
+      
+      result.addresses.forEach(address => {
+        if (!address) return; // Skip empty addresses
+        
+        const button = document.createElement('button');
+        button.textContent = `Open ${buttonLabel}: ${address}`;
+        button.addEventListener('click', () => {
+          chrome.tabs.create({ url: `http://${address}${themeParam}` });
+          window.close();
+        });
+        addressList.appendChild(button);
+      });
+    } else {
+      addressList.style.display = 'none';
+    }
   });
 });

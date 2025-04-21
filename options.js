@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.sync.get(['updateAvailable', 'latestVersion'], (result) => {
         if (result.updateAvailable) {
           updateStatus.textContent = `New version ${result.latestVersion} available!`;
-          updateStatus.style.color = '#2563eb';
+          updateStatus.style.color = '#dc2626';
         } else {
           updateStatus.textContent = 'You have the latest version!';
           updateStatus.style.color = '#25EB3FFF';

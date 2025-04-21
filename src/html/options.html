@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Px2 Connect Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #3A434C;
+      color: white;
+    }
+    .container {
+      background-color: #3b4753;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #4B5563;
+      border-radius: 4px;
+    }
+    .section h2 {
+      margin-top: 0;
+      color: white;
+    }
+    label {
+      display: block;
+      margin: 10px 0;
+      color: white;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #6B7280;
+      border-radius: 4px;
+      background: #4B5563;
+      color: white;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #8B5CF6;
+    }
+    button {
+      background-color: #5A6470;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #6B7684;
+    }
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .address-container {
+      margin: 10px 0;
+    }
+    .address-input {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+    }
+    .address-input input {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+    .remove-button {
+      background-color: #dc2626;
+      padding: 8px 12px;
+    }
+    .remove-button:hover {
+      background-color: #b91c1c;
+    }
+    .radio-group {
+      margin: 10px 0;
+    }
+    .radio-label {
+      display: inline-block;
+      margin-right: 20px;
+    }
+    .version-info {
+      text-align: center;
+      margin-top: 20px;
+      color: #9CA3AF;
+    }
+    .update-status {
+      text-align: center;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+    .developer-info {
+      text-align: center;
+      color: #9CA3AF;
+      margin-top: 20px;
+      font-size: 12px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Px2 Connect Settings</h1>
+    
+    <div class="section">
+      <h2>Connection Method</h2>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="ipType" value="default" checked> Default IP
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="ipType" value="custom"> Custom Addresses
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Address Type</h2>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="addressType" value="ip" checked> IP Address
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="addressType" value="hostname"> Hostname
+        </label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Custom Addresses</h2>
+      <div id="addressList" class="address-container">
+        <!-- Address inputs will be added here -->
+      </div>
+      <button id="addAddress" type="button">Add Address</button>
+    </div>
+
+    <div class="section">
+      <h2>Theme</h2>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="theme" value="flatdark" checked> Flat Dark
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="theme" value="white"> White
+        </label>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button id="save" type="button">Save Settings</button>
+    </div>
+
+    <div class="version-info">
+      Version: <span id="version"></span>
+      <button id="checkUpdate" type="button">Check for Updates</button>
+      <div id="updateStatus" class="update-status"></div>
+    </div>
+
+    <div class="developer-info">Developed by JPHsystems © 2024</div>
+  </div>
+
+  <script src="../js/options.js"></script>
+</body>
+</html>

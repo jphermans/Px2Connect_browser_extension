@@ -41,17 +41,17 @@ jobs:
         run: |
           zip -r px2-connect.zip \
             manifest.json \
-            background.js \
-            options.html \
-            options.js \
-            popup.html \
-            popup.js \
-            styles.css \
-            settings.ts \
-            shortcuts.ts \
-            chrome.d.ts \
-            PF8-removebg-preview.png \
-            px2.PNG \
+            src/background/background.js \
+            src/options/options.html \
+            src/options/options.js \
+            src/popup/popup.html \
+            src/popup/popup.js \
+            src/styles.css \
+            src/settings.ts \
+            src/shortcuts.ts \
+            src/chrome.d.ts \
+            src/assets/PF8-removebg-preview.png \
+            src/assets/px2.PNG \
             .github/workflows/package.yml \
             package.json \
             tsconfig.json

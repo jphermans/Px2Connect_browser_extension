@@ -5,7 +5,7 @@ VERSION=$(cat manifest.json | grep '"version"' | cut -d'"' -f4)
 echo "Creating extension packages for version ${VERSION}..."
 
 # Create directory for Firefox version
-mkdir -p firefox
+mkdir -p firefox/src/{js,css,html,images}
 
 # Create Firefox manifest
 cat manifest.json | \
@@ -20,45 +20,34 @@ cat manifest.json | \
   sed 's/"chrome.notifications"/"browser.notifications"/' > firefox/manifest.json
 
 # Copy and modify files for Firefox
-cp background.js firefox/
-cp options.html firefox/
-cp options.js firefox/
-cp popup.html firefox/
-cp popup.js firefox/
-cp styles.css firefox/
-cp PF8-removebg-preview.png firefox/
-cp px2.PNG firefox/
-
-# Replace Chrome API calls with Firefox API calls in JavaScript files
-for file in firefox/*.js; do
-  sed -i '' 's/chrome\./browser\./g' "$file"
-done
+cp -r src/* firefox/src/
+sed -i '' 's/chrome\./browser\./g' firefox/src/js/*.js
 
 # Create Chrome Web Store package
 echo "Creating Chrome Web Store package..."
 zip -r px2-connect-chrome.zip \
   manifest.json \
-  background.js \
-  options.html \
-  options.js \
-  popup.html \
-  popup.js \
-  styles.css \
-  PF8-removebg-preview.png \
-  px2.PNG
+  src/js/background.js \
+  src/js/options.js \
+  src/js/popup.js \
+  src/css/styles.css \
+  src/html/options.html \
+  src/html/popup.html \
+  src/images/PF8-removebg-preview.png \
+  src/images/px2.PNG
 
 # Create Firefox Add-on package
 echo "Creating Firefox Add-on package..."
 cd firefox && zip -r ../px2-connect-firefox.zip \
   manifest.json \
-  background.js \
-  options.html \
-  options.js \
-  popup.html \
-  popup.js \
-  styles.css \
-  PF8-removebg-preview.png \
-  px2.PNG
+  src/js/background.js \
+  src/js/options.js \
+  src/js/popup.js \
+  src/css/styles.css \
+  src/html/options.html \
+  src/html/popup.html \
+  src/images/PF8-removebg-preview.png \
+  src/images/px2.PNG
 cd ..
 
 echo "Created extension packages:"

@@ -121,7 +121,7 @@ chrome.alarms.onAlarm.addListener(alarm => {
 function showNotification(id, options) {
   chrome.notifications.create(id, {
     type: 'basic',
-    iconUrl: 'PF8-removebg-preview.png',
+    iconUrl: '../images/PF8-removebg-preview.png',
     title: options.title,
     message: options.message,
     priority: 2,

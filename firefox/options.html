@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Px2 Connect Options</title>
+  <style>
+    body {
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #3A434C;
+      color: white;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .card {
+      background-color: #3b4753;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .image-container {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .image-container img {
+      width: 250px;
+      height: 150px;
+      object-fit: contain;
+    }
+    .option-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding: 8px 0;
+    }
+    input[type="radio"] {
+      margin-right: 12px;
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    #customIp {
+      margin-top: 12px;
+      padding: 8px;
+      width: 200px;
+      background: #5A6470;
+      border: 1px solid #7A8591;
+      color: white;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    #customIp:focus {
+      outline: none;
+      border-color: #9CA3AF;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #5A6470;
+      color: white;
+      border: 1px solid #6B7280;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #6B7684;
+    }
+    h2 {
+      color: white;
+      margin-top: 0;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .custom-input-group {
+      margin-top: 12px;
+      margin-left: 32px;
+    }
+    .address-type {
+      margin-bottom: 12px;
+    }
+    .address-type label {
+      display: inline-block;
+      margin-right: 20px;
+      padding: 4px 0;
+    }
+    .theme-selection label {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 16px;
+      padding: 8px 0;
+    }
+    .version-info {
+      text-align: center;
+      color: #9CA3AF;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .developer-info {
+      text-align: center;
+      color: #9CA3AF;
+      margin-top: 10px;
+      font-size: 14px;
+      font-style: italic;
+    }
+    .update-check {
+      text-align: center;
+      margin-top: 15px;
+    }
+    #checkUpdate {
+      background-color: #dc2626;
+      border-color: #b91c1c;
+    }
+    #checkUpdate:hover {
+      background-color: #b91c1c;
+    }
+    .update-status {
+      margin-top: 10px;
+      text-align: center;
+      color: #dc2626;
+      font-size: 14px;
+      min-height: 20px;
+      font-weight: bold;
+    }
+    .address-entry {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .address-entry input {
+      margin-top: 0;
+    }
+    .remove-address {
+      background: #dc2626;
+      padding: 4px 8px;
+      font-size: 14px;
+    }
+    .remove-address:hover {
+      background: #b91c1c;
+    }
+    .secondary-button {
+      background: transparent;
+      border: 1px dashed #6B7280;
+      padding: 6px 12px;
+      margin-top: 8px;
+    }
+    .secondary-button:hover {
+      background: #4B5563;
+    }
+    .secondary-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>Px2 connect Configuration</h2>
+      <div class="image-container">
+        <img id="mainImage" src="PF8-removebg-preview.png" alt="Px2 connect">
+      </div>
+      <div class="option-group">
+        <label>
+          <input type="radio" name="ipType" value="default" checked>
+          Use default service IP (169.254.1.1)
+        </label>
+        <label>
+          <input type="radio" name="ipType" value="custom">
+          Use custom address
+        </label>
+        <div class="custom-input-group">
+          <div class="address-type">
+            <label>
+              <input type="radio" name="addressType" value="ip" checked disabled>
+              IP Address
+            </label>
+            <label>
+              <input type="radio" name="addressType" value="hostname" disabled>
+              Hostname
+            </label>
+          </div>
+          <div id="addressList">
+            <!-- Address entries will be added here dynamically -->
+          </div>
+          <button id="addAddress" class="secondary-button" disabled>Add Address</button>
+        </div>
+      </div>
+      <div class="option-group">
+        <h3>Theme Preference</h3>
+        <div class="theme-selection">
+          <label>
+            <input type="radio" name="theme" value="flatdark" checked>
+            Flat Dark
+          </label>
+          <label>
+            <input type="radio" name="theme" value="white">
+            White
+          </label>
+        </div>
+      </div>
+      <button id="save">Save</button>
+      <div class="update-check">
+        <button id="checkUpdate">Check for Updates</button>
+        <div id="updateStatus" class="update-status"></div>
+      </div>
+      <div class="version-info">Version <span id="version"></span></div>
+      <div class="developer-info">Developed by JPHsystems © 2024</div>
+    </div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

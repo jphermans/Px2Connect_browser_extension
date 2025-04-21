@@ -26,11 +26,11 @@ async function checkNetworkInterfaces() {
   }
 
   try {
-    if (!chrome.system || !chrome.system.network) {
+    if (!browser.system || !browser.system.network) {
       return { available: false, error: 'System network API not available' };
     }
 
-    const interfaces = await chrome.system.network.getNetworkInterfaces();
+    const interfaces = await browser.system.network.getNetworkInterfaces();
     const hasMatchingIP = interfaces.some(iface => {
       return iface.address.startsWith('169.254.1.');
     });
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadingIndicator.style.display = 'block';
 
   // Check for updates immediately when popup opens
-  chrome.runtime.sendMessage({ action: 'checkForUpdates' });
+  browser.runtime.sendMessage({ action: 'checkForUpdates' });
 
   // Check network interfaces with caching
   const networkResult = await checkNetworkInterfaces();
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Lazy load settings
   const loadSettings = debounce(async () => {
     try {
-      const result = await chrome.storage.sync.get([
+      const result = await browser.storage.sync.get([
         'updateAvailable', 
         'updateUrl', 
         'ipType', 
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateBanner.style.display = 'block';
         updateBanner.innerHTML = `<strong>New version ${result.latestVersion} available!</strong><br>Click here to update`;
         updateBanner.addEventListener('click', () => {
-          chrome.tabs.create({ url: result.updateUrl });
+          browser.tabs.create({ url: result.updateUrl });
           window.close();
         });
       }
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const url = rescueMode.checked 
           ? `${baseUrl}/cgi-bin/upgrade.cgi${themeParam}`
           : `${baseUrl}${themeParam}`;
-        chrome.tabs.create({ url });
+        browser.tabs.create({ url });
         window.close();
       });
 
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const button = document.createElement('button');
           button.textContent = `Open ${buttonLabel}: ${address}`;
           button.addEventListener('click', () => {
-            chrome.tabs.create({ url: `http://${address}${themeParam}` });
+            browser.tabs.create({ url: `http://${address}${themeParam}` });
             window.close();
           });
           addressList.appendChild(button);

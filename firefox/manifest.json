@@ -1,9 +1,9 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "ServicePort Tab Opener",
   "version": "1.1.18",
   "description": "Opens a new tab to configurable IP address",
-  "action": {
+  "browser_action": {
     "default_icon": {
       "16": "PF8-removebg-preview.png",
       "32": "PF8-removebg-preview.png",
@@ -19,9 +19,9 @@
     "notifications",
     "management",
     "commands",
-    "system.network"
+    "browser.network"
   ],
-  "host_permissions": [
+  "permissions": [
     "https://api.github.com/"
   ],
   "commands": {
@@ -55,7 +55,7 @@
     }
   },
   "background": {
-    "service_worker": "background.js",
+    "scripts": "background.js",
     "type": "module"
   },
   "options_page": "options.html",

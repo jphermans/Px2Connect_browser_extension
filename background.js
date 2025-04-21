@@ -18,11 +18,11 @@ chrome.runtime.onInstalled.addListener(async details => {
   console.log('Extension installed/updated:', details);
 
   try {
-    // Get settings from sync storage
+    // Always try to restore settings from local storage first
+    const localBackup = await chrome.storage.local.get('backupSettings');
     const syncSettings = await chrome.storage.sync.get(null);
-    console.log('Current sync settings:', syncSettings);
-
-    // If we have settings in sync storage, save them to local storage as backup
+    
+    // If we have sync settings, back them up
     if (syncSettings && Object.keys(syncSettings).length > 0) {
       await chrome.storage.local.set({
         backupSettings: {
@@ -31,64 +31,48 @@ chrome.runtime.onInstalled.addListener(async details => {
           fromVersion: MANIFEST_VERSION
         }
       });
-      console.log('Settings backed up to local storage');
+      console.log('Current settings backed up to local storage');
     }
 
-    // Handle both install and update cases
-    if (details.reason === 'install' || details.reason === 'update') {
-      // Check for backup settings
-      const localBackup = await chrome.storage.local.get('backupSettings');
-      if (localBackup.backupSettings) {
-        console.log('Found backup settings:', localBackup.backupSettings);
-        
-        // Restore settings from backup
-        const settingsToRestore = {
-          ipType: localBackup.backupSettings.ipType || DEFAULT_SETTINGS.ipType,
-          theme: localBackup.backupSettings.theme || DEFAULT_SETTINGS.theme,
-          addresses: localBackup.backupSettings.addresses || DEFAULT_SETTINGS.addresses,
-          addressType: localBackup.backupSettings.addressType || DEFAULT_SETTINGS.addressType,
-          settingsVersion: SETTINGS_VERSION
-        };
-        
-        await chrome.storage.sync.set(settingsToRestore);
-        console.log('Settings restored from backup');
+    // Determine if we should restore settings
+    if (localBackup.backupSettings) {
+      console.log('Found backup settings:', localBackup.backupSettings);
+      
+      // Restore settings from backup
+      const settingsToRestore = {
+        ipType: localBackup.backupSettings.ipType || DEFAULT_SETTINGS.ipType,
+        theme: localBackup.backupSettings.theme || DEFAULT_SETTINGS.theme,
+        addresses: localBackup.backupSettings.addresses || DEFAULT_SETTINGS.addresses,
+        addressType: localBackup.backupSettings.addressType || DEFAULT_SETTINGS.addressType,
+        settingsVersion: SETTINGS_VERSION
+      };
+      
+      await chrome.storage.sync.set(settingsToRestore);
+      console.log('Settings restored from backup');
 
-        // Show appropriate notification based on install type
-        if (details.reason === 'update') {
-          const previousVersion = details.previousVersion || 'unknown';
-          showNotification('update-complete', {
-            title: 'Px2 Connect Updated Successfully',
-            message: `Updated from v${previousVersion} to v${MANIFEST_VERSION}\n\nTo complete the update:\n1. Go to your browser extensions (chrome://extensions/)\n2. Remove the old version of Px2 Connect\n\nYour settings have been preserved.`,
-            buttons: [
-              { title: 'Open Extensions Page' },
-              { title: 'Got It' }
-            ]
-          });
-        } else {
-          showNotification('install-complete', {
-            title: 'Px2 Connect Installed Successfully',
-            message: 'Settings have been restored from your previous installation.\n\nPlease remove the old version of Px2 Connect from your extensions page.',
-            buttons: [
-              { title: 'Open Extensions Page' },
-              { title: 'Got It' }
-            ]
-          });
-        }
-      } else {
-        // No backup found, use defaults
+      // Show notification about successful settings restoration
+      showNotification('settings-restored', {
+        title: 'Px2 Connect Settings Restored',
+        message: 'Your previous settings have been restored.\n\nIMPORTANT: To complete the update process:\n1. Go to chrome://extensions\n2. Remove any old versions of Px2 Connect\n3. Keep only this new version',
+        buttons: [
+          { title: 'Open Extensions Page' },
+          { title: 'Got It' }
+        ]
+      });
+    } else {
+      // No backup found, use defaults for new installations
+      if (details.reason === 'install') {
         await chrome.storage.sync.set(DEFAULT_SETTINGS);
-        console.log('No backup found, using default settings');
-
-        if (details.reason === 'install') {
-          showNotification('install-complete', {
-            title: 'Px2 Connect Installed Successfully',
-            message: 'The extension has been installed with default settings.\n\nClick to configure your preferences.',
-            buttons: [
-              { title: 'Open Settings' },
-              { title: 'Got It' }
-            ]
-          });
-        }
+        console.log('New installation: using default settings');
+        
+        showNotification('new-install', {
+          title: 'Px2 Connect Installed Successfully',
+          message: 'The extension has been installed with default settings.\n\nClick to configure your preferences.',
+          buttons: [
+            { title: 'Open Settings' },
+            { title: 'Got It' }
+          ]
+        });
       }
     }
 
@@ -151,12 +135,7 @@ async function checkForUpdates() {
   try {
     const response = await fetch(GITHUB_API_URL);
     if (!response.ok) {
-      console.error('Update check failed:', response.status);
-      chrome.storage.sync.set({ 
-        updateCheckError: `Failed to check for updates: ${response.status} ${response.statusText}`,
-        lastUpdateCheck: Date.now()
-      });
-      return;
+      throw new Error(`Failed to check for updates: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -165,7 +144,7 @@ async function checkForUpdates() {
     if (isNewerVersion(latestVersion, MANIFEST_VERSION)) {
       console.log('New version available:', latestVersion);
       
-      // Back up current settings before update
+      // Back up current settings
       const currentSettings = await chrome.storage.sync.get(null);
       await chrome.storage.local.set({
         backupSettings: {
@@ -180,37 +159,35 @@ async function checkForUpdates() {
         updateAvailable: true,
         latestVersion: latestVersion,
         updateUrl: data.html_url,
-        lastUpdateCheck: Date.now(),
-        updateCheckError: null
+        lastUpdateCheck: Date.now()
       });
 
-      // Show update notification with clear instructions
-      showNotification('update-available', {
+      // Show manual update notification
+      showNotification('manual-update', {
         title: 'Px2 Connect Update Available',
-        message: `Version ${latestVersion} is available!\n\nTo update:\n1. Click this notification\n2. Download & install the new version\n3. Remove the old version from extensions page`,
+        message: `Version ${latestVersion} is available!\n\nTo update manually:\n1. Click to download the new version\n2. Install the downloaded file\n3. Remove the old version from chrome://extensions`,
         buttons: [
-          { title: 'Update Now' },
-          { title: 'Remind Me Later' }
+          { title: 'Download Update' },
+          { title: 'Later' }
         ]
       });
     } else {
       console.log('Extension is up to date');
       await chrome.storage.sync.set({ 
         updateAvailable: false,
-        lastUpdateCheck: Date.now(),
-        updateCheckError: null
+        lastUpdateCheck: Date.now()
       });
     }
   } catch (error) {
     console.error('Error checking for updates:', error);
-    chrome.storage.sync.set({ 
-      updateCheckError: `Error checking for updates: ${error.message}`,
+    await chrome.storage.sync.set({ 
+      updateCheckError: error.message,
       lastUpdateCheck: Date.now()
     });
   }
 }
 
-// Helper function to compare version numbers (Semantic Versioning)
+// Helper function to compare version numbers
 function isNewerVersion(latestVersion, currentVersion) {
   const latestParts = latestVersion.split('.').map(Number);
   const currentParts = currentVersion.split('.').map(Number);
@@ -218,48 +195,45 @@ function isNewerVersion(latestVersion, currentVersion) {
   for (let i = 0; i < Math.max(latestParts.length, currentParts.length); i++) {
     const latest = latestParts[i] || 0;
     const current = currentParts[i] || 0;
-
     if (latest > current) return true;
     if (latest < current) return false;
   }
-
-  return false; // Versions are equal
+  return false;
 }
+
+// Handle notification clicks
+chrome.notifications.onClicked.addListener((notificationId) => {
+  if (notificationId === 'manual-update') {
+    chrome.storage.sync.get(['updateUrl'], (result) => {
+      if (result.updateUrl) {
+        chrome.tabs.create({ url: result.updateUrl });
+      }
+    });
+  } else if (notificationId === 'settings-restored') {
+    chrome.tabs.create({ url: 'chrome://extensions/' });
+  } else if (notificationId === 'new-install') {
+    chrome.runtime.openOptionsPage();
+  }
+});
 
 // Handle notification button clicks
 chrome.notifications.onButtonClicked.addListener((notificationId, buttonIndex) => {
-  if (notificationId === 'update-available') {
-    if (buttonIndex === 0) { // "Update Now"
+  if (notificationId === 'manual-update') {
+    if (buttonIndex === 0) { // "Download Update"
       chrome.storage.sync.get(['updateUrl'], (result) => {
         if (result.updateUrl) {
           chrome.tabs.create({ url: result.updateUrl });
         }
       });
     }
-    // If buttonIndex is 1 ("Remind Me Later"), just close the notification
-  } else if (notificationId === 'update-complete' || notificationId === 'install-complete') {
-    if (buttonIndex === 0) {
-      if (notificationId === 'update-complete' || notificationId === 'install-complete') {
-        chrome.tabs.create({ url: 'chrome://extensions/' });
-      } else {
-        chrome.runtime.openOptionsPage();
-      }
+  } else if (notificationId === 'settings-restored') {
+    if (buttonIndex === 0) { // "Open Extensions Page"
+      chrome.tabs.create({ url: 'chrome://extensions/' });
     }
-  }
-});
-
-// Add notification click handler
-chrome.notifications.onClicked.addListener((notificationId) => {
-  if (notificationId === 'update-available') {
-    // Open the release page when update notification is clicked
-    chrome.storage.sync.get(['updateUrl'], (result) => {
-      if (result.updateUrl) {
-        chrome.tabs.create({ url: result.updateUrl });
-      }
-    });
-  } else if (notificationId === 'update-complete' || notificationId === 'install-complete') {
-    // Open the extensions page when instructions notification is clicked
-    chrome.tabs.create({ url: 'chrome://extensions/' });
+  } else if (notificationId === 'new-install') {
+    if (buttonIndex === 0) { // "Open Settings"
+      chrome.runtime.openOptionsPage();
+    }
   }
 });
 

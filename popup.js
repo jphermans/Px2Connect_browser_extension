@@ -65,7 +65,8 @@ const updateUI = debounce(async (result) => {
 document.addEventListener('DOMContentLoaded', async () => {
   // Set current year in developer info
   const developerInfo = document.querySelector('.developer-info');
-  developerInfo.textContent = `Developed by JPHsystems © ${new Date().getFullYear()}`;
+  const currentYear = new Date().getFullYear();
+  developerInfo.innerHTML = `Developed by JPHsystems &copy; ${currentYear}`;
 
   const defaultIpBtn = document.getElementById('defaultIp');
   const addressList = document.getElementById('addressList');

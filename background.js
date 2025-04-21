@@ -17,62 +17,76 @@ const DEFAULT_SETTINGS = {
 chrome.runtime.onInstalled.addListener(async details => {
   console.log('Extension installed/updated:', details);
   
-  if (details.reason === 'install' || details.reason === 'update') {
-    // Store the current extension ID for future reference
-    await chrome.storage.sync.set({ currentExtensionId: chrome.runtime.id });
+  try {
+    // First, get current settings before any changes
+    const currentSettings = await chrome.storage.sync.get(null);
+    console.log('Current settings before migration:', currentSettings);
+
+    // Get all installed extensions
+    const extensions = await chrome.management.getAll();
     
-    try {
-      // Get all installed extensions
-      const extensions = await chrome.management.getAll();
-      
-      // Find other versions of this extension
-      const otherVersions = extensions.filter(ext => 
-        ext.id !== chrome.runtime.id && // Not the current version
-        ext.name === chrome.runtime.getManifest().name // Same name
-      );
+    // Find other versions of this extension
+    const otherVersions = extensions.filter(ext => 
+      ext.id !== chrome.runtime.id && // Not the current version
+      ext.name === chrome.runtime.getManifest().name // Same name
+    );
 
-      console.log('Found other versions:', otherVersions);
+    console.log('Found other versions:', otherVersions);
 
-      // If there are other versions installed
-      if (otherVersions.length > 0) {
-        // Get settings from the old version before removing it
-        const oldSettings = await chrome.storage.sync.get(null);
-        console.log('Retrieved old settings:', oldSettings);
+    // Prepare settings to migrate
+    let settingsToMigrate = {};
 
-        // Remove old versions
-        for (const oldVersion of otherVersions) {
-          try {
-            await chrome.management.uninstall(oldVersion.id);
-            console.log(`Removed old version: ${oldVersion.name} (${oldVersion.version})`);
-          } catch (error) {
-            console.error(`Failed to remove old version ${oldVersion.version}:`, error);
-          }
-        }
-
-        // Migrate settings
-        if (oldSettings && Object.keys(oldSettings).length > 0) {
-          // Keep only the relevant settings
-          const settingsToMigrate = {
-            ipType: oldSettings.ipType || DEFAULT_SETTINGS.ipType,
-            theme: oldSettings.theme || DEFAULT_SETTINGS.theme,
-            addresses: oldSettings.addresses || DEFAULT_SETTINGS.addresses,
-            addressType: oldSettings.addressType || DEFAULT_SETTINGS.addressType,
+    if (details.reason === 'install') {
+      // For fresh install, use existing settings if available, otherwise use defaults
+      settingsToMigrate = currentSettings && Object.keys(currentSettings).length > 0
+        ? {
+            ipType: currentSettings.ipType || DEFAULT_SETTINGS.ipType,
+            theme: currentSettings.theme || DEFAULT_SETTINGS.theme,
+            addresses: currentSettings.addresses || DEFAULT_SETTINGS.addresses,
+            addressType: currentSettings.addressType || DEFAULT_SETTINGS.addressType,
             settingsVersion: SETTINGS_VERSION
-          };
+          }
+        : DEFAULT_SETTINGS;
+    } else if (details.reason === 'update') {
+      // For updates, preserve existing settings
+      settingsToMigrate = {
+        ipType: currentSettings.ipType || DEFAULT_SETTINGS.ipType,
+        theme: currentSettings.theme || DEFAULT_SETTINGS.theme,
+        addresses: currentSettings.addresses || DEFAULT_SETTINGS.addresses,
+        addressType: currentSettings.addressType || DEFAULT_SETTINGS.addressType,
+        settingsVersion: SETTINGS_VERSION
+      };
+    }
 
-          // Save migrated settings
-          await chrome.storage.sync.set(settingsToMigrate);
-          console.log('Settings migrated successfully:', settingsToMigrate);
+    // Save the settings before removing old versions
+    await chrome.storage.sync.set(settingsToMigrate);
+    console.log('Settings saved before cleanup:', settingsToMigrate);
+
+    // Remove old versions if any exist
+    if (otherVersions.length > 0) {
+      for (const oldVersion of otherVersions) {
+        try {
+          await chrome.management.uninstall(oldVersion.id);
+          console.log(`Removed old version: ${oldVersion.name} (${oldVersion.version})`);
+        } catch (error) {
+          console.error(`Failed to remove old version ${oldVersion.version}:`, error);
         }
       }
-    } catch (error) {
-      console.error('Error during version management:', error);
-      // Ensure default settings are set if something goes wrong
-      await chrome.storage.sync.set(DEFAULT_SETTINGS);
     }
+
+    // Verify settings after cleanup
+    const finalSettings = await chrome.storage.sync.get(null);
+    console.log('Final settings after migration:', finalSettings);
 
     // Set up update checking
     checkForUpdates();
+  } catch (error) {
+    console.error('Error during version management:', error);
+    // If something goes wrong, preserve existing settings if available
+    const fallbackSettings = await chrome.storage.sync.get(null);
+    if (!fallbackSettings || Object.keys(fallbackSettings).length === 0) {
+      await chrome.storage.sync.set(DEFAULT_SETTINGS);
+    }
   }
 
   // Set up periodic checks

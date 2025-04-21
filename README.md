@@ -31,7 +31,7 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
 ### Build from Source
 1. Clone this repository:
    ```bash
-   git clone https://github.com/YourUsername/px2-connect.git
+   git clone https://github.com/jphermans/px2-connect.git
    ```
 2. Open your browser's extension page
 3. Enable "Developer mode"

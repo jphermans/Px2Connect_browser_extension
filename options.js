@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
           updateStatus.textContent = `New version ${result.latestVersion} available!`;
           updateStatus.style.color = '#2563eb';
         } else {
-          updateStatus.textContent = 'You have the latest version';
-          updateStatus.style.color = '#10B981';
+          updateStatus.textContent = 'You have the latest version!';
+          updateStatus.style.color = '#25EB3FFF';
         }
         
         // Clear status message after 5 seconds

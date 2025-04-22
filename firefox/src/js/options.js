@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateStatus = document.getElementById('updateStatus');
   const addressList = document.getElementById('addressList');
   const addAddressButton = document.getElementById('addAddress');
+  const showWelcomeButton = document.getElementById('showWelcome');
+
+  // Show Welcome button handler
+  showWelcomeButton.addEventListener('click', () => {
+    browser.tabs.create({
+      url: browser.runtime.getURL('src/html/welcome.html')
+    });
+  });
 
   // Load saved settings
   browser.storage.sync.get(['ipType', 'addresses', 'addressType', 'theme'], (result) => {
@@ -191,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Display version and handle update check
   const manifest = browser.runtime.getManifest();
-  versionSpan.textContent = manifest.version;
+  versionSpan.textContent = `Version: ${manifest.version}`;
 
   checkUpdateButton.addEventListener('click', () => {
     updateStatus.textContent = 'Checking for updates...';

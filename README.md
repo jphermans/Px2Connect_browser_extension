@@ -16,6 +16,8 @@
 - 👋 Interactive welcome page
 - 🔐 Reliable settings migration
 - 📱 Responsive design across all pages
+- 🍎 Safari browser support
+- 🔄 Enhanced update system with persistent notifications
 
 ## 🛠️ Usage
 
@@ -39,7 +41,7 @@ The extension provides the following keyboard shortcuts:
 - Ctrl+Shift+3 (Command+Shift+3 on Mac) - Open second custom address
 - Ctrl+Shift+R (Command+Shift+R on Mac) - Toggle rescue mode
 
-Note: Due to Chrome's limitations, the extension supports a maximum of 4 keyboard shortcuts. Additional custom addresses can be accessed through the popup interface.
+Note: Due to browser limitations, the extension supports a maximum of 4 keyboard shortcuts. Additional custom addresses can be accessed through the popup interface.
 
 ### Configuration
 1. Right-click the extension icon
@@ -74,17 +76,21 @@ The extension includes a special rescue mode for device recovery:
 
 ## 📥 Installation
 
-Since this extension isn't distributed through the Chrome Web Store, you can install it in two ways:
-
-### Manual Installation
+### Chrome/Edge/Brave Installation
 1. Download the latest release from the [Releases](../../releases) page
-2. Open your Chrome-based browser (Chrome, Edge, Brave, etc.)
+2. Open your Chrome-based browser
 3. Go to the extensions page:
    - Chrome: `chrome://extensions`
    - Edge: `edge://extensions`
    - Brave: `brave://extensions`
 4. Enable "Developer mode" (top right corner)
 5. Drag and drop the downloaded `.zip` file into the browser window
+
+### Safari Installation
+1. Download the Safari version from the [Releases](../../releases) page
+2. Open Safari and go to Safari > Settings > Extensions
+3. Enable the extension and grant necessary permissions
+4. The extension will be available in your Safari toolbar
 
 ### Build from Source
 1. Clone this repository:
@@ -101,35 +107,38 @@ Since this extension isn't distributed through the Chrome Web Store, you can ins
 ### Automatic Updates
 The extension checks for new versions:
 - When first installed
-- Every 6 hours automatically
+- Every 24 hours automatically
 - Each time you open the popup
 - Manually through the options page
 
 When a new version is available:
-1. A notification banner will appear at the top of the popup
-2. A desktop notification will be shown
+1. A persistent notification banner will appear at the top of the popup
+2. A desktop notification will be shown with clear update instructions
 3. Click the banner to go to the download page
 4. Download and install the new version following the installation steps
-
-You can also check for updates manually:
-1. Open the options page
-2. Click the "Check for Updates" button
-3. The status will show if you're up to date or if a new version is available
 
 ### Update Installation
 New versions will be available through the [Releases](../../releases) page. To update:
 1. Download the latest version
 2. Remove the existing extension
 3. Install the new version following the installation steps
+4. Your settings will be automatically migrated to the new version
 
 ## Recent Improvements
 
-### Welcome Experience
-- New welcome page introducing key features
-- Modern, consistent design matching the extension theme
-- Professional SVG icons for better visual clarity
-- Smooth transitions and hover effects
-- Automatic redirection to settings after first launch
+### Multi-Browser Support
+- Added full Safari browser compatibility
+- Browser-specific optimizations for each platform
+- Consistent experience across all supported browsers
+- Automatic browser detection and feature adaptation
+
+### Enhanced Update System
+- Persistent update notifications
+- Clear step-by-step update instructions
+- Improved version comparison logic
+- Automatic settings migration
+- Backup and restore functionality
+- Error handling and recovery
 
 ### Settings Management
 - Enhanced settings migration between updates
@@ -137,13 +146,6 @@ New versions will be available through the [Releases](../../releases) page. To u
 - Reliable settings restoration after updates
 - Clear notifications about the update process
 - Improved error handling and recovery
-
-### Update System
-- Redesigned update notifications
-- Clear instructions for the update process
-- Persistent notifications for important updates
-- One-click access to new versions
-- Improved version comparison logic
 
 ### Visual Consistency
 - Unified color scheme across all pages
@@ -157,7 +159,7 @@ New versions will be available through the [Releases](../../releases) page. To u
 ### Prerequisites
 - Node.js
 - TypeScript
-- Chrome/Edge browser
+- Chrome/Edge/Safari browser
 
 ### Building
 1. Clone the repository
@@ -171,34 +173,22 @@ New versions will be available through the [Releases](../../releases) page. To u
    ```
 
 ### Packaging
-The extension is automatically packaged when:
+The extension is automatically packaged for all supported browsers when:
 - A new release is created on GitHub
 - The package workflow is manually triggered
 
-The package includes the following files:
-- `manifest.json` - Extension configuration
-- `background.js` - Background service worker
-- `options.html` and `options.js` - Options page
-- `popup.html` and `popup.js` - Popup interface
-- `styles.css` - Styling
-- TypeScript files:
-  - `settings.ts` - Settings management
-  - `shortcuts.ts` - Keyboard shortcuts
-  - `chrome.d.ts` - TypeScript definitions
-- Assets:
-  - `PF8-removebg-preview.png` - Extension icon
-  - `px2.PNG` - Px2 device image
-- Configuration files:
-  - `package.json` - Project configuration
-  - `tsconfig.json` - TypeScript configuration
-  - `.github/workflows/package.yml` - GitHub Actions workflow
+The package includes browser-specific versions:
+- Chrome/Edge/Brave version
+- Safari version with Info.plist
+- Firefox version (coming soon)
 
 ## 🤝 Contributing
 
 Feel free to:
 - Open issues
 - Submit pull requests
-- Suggest improvements
+- Report browser-specific issues
+- Suggest improvements for any supported browser
 
 ## 📄 License
 

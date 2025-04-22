@@ -10,8 +10,15 @@ const DEFAULT_SETTINGS = {
   theme: 'flatdark',
   addresses: [],
   addressType: 'ip',
-  settingsVersion: SETTINGS_VERSION
+  settingsVersion: SETTINGS_VERSION,
+  hasSeenWelcome: false
 };
+
+function showWelcomeAlert() {
+  browser.tabs.create({
+    url: browser.runtime.getURL('src/html/welcome.html')
+  });
+}
 
 // Initialize update check on install/update
 browser.runtime.onInstalled.addListener(async details => {
@@ -32,6 +39,11 @@ browser.runtime.onInstalled.addListener(async details => {
         }
       });
       console.log('Current settings backed up to local storage');
+    }
+
+    // Show welcome message on fresh install
+    if (details.reason === 'install') {
+      showWelcomeAlert();
     }
 
     // Determine if we should restore settings
@@ -106,6 +118,10 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'checkForUpdates') {
     checkForUpdates();
     sendResponse({ status: 'checking' });
+  } else if (message.action === 'closeWelcomePage') {
+    if (sender.tab) {
+      browser.tabs.remove(sender.tab.id);
+    }
   }
   return true; // Keep the message channel open for async response
 });
@@ -121,7 +137,7 @@ browser.alarms.onAlarm.addListener(alarm => {
 function showNotification(id, options) {
   browser.notifications.create(id, {
     type: 'basic',
-    iconUrl: '../assets/PF8-removebg-preview.png',
+    iconUrl: '../images/PF8-removebg-preview.png',
     title: options.title,
     message: options.message,
     priority: 2,
@@ -249,4 +265,49 @@ browser.action.onClicked.addListener(() => {
     
     browser.tabs.create({ url });
   });
+});
+
+// Handle keyboard shortcuts
+browser.commands.onCommand.addListener(async (command) => {
+  try {
+    const settings = await browser.storage.sync.get(['ipType', 'addresses', 'theme']);
+    const theme = settings.theme || 'flatdark';
+    const themeParam = `?theme=${theme}`;
+    
+    switch (command) {
+      case 'open-default':
+        const rescueMode = await browser.storage.local.get('rescueMode');
+        const baseUrl = 'http://169.254.1.1';
+        const url = rescueMode.rescueMode 
+          ? `${baseUrl}/cgi-bin/upgrade.cgi${themeParam}`
+          : `${baseUrl}${themeParam}`;
+        browser.tabs.create({ url });
+        break;
+      case 'open-custom-1':
+        if (settings.ipType === 'custom' && settings.addresses?.[0]) {
+          browser.tabs.create({ url: `http://${settings.addresses[0]}${themeParam}` });
+        }
+        break;
+      case 'open-custom-2':
+        if (settings.ipType === 'custom' && settings.addresses?.[1]) {
+          browser.tabs.create({ url: `http://${settings.addresses[1]}${themeParam}` });
+        }
+        break;
+      case 'toggle-rescue':
+        const currentState = await browser.storage.local.get('rescueMode');
+        const newState = !currentState.rescueMode;
+        await browser.storage.local.set({ rescueMode: newState });
+        // If default IP tab is open, update it
+        const tabs = await browser.tabs.query({ url: 'http://169.254.1.1/*' });
+        if (tabs.length > 0) {
+          const newUrl = newState 
+            ? `http://169.254.1.1/cgi-bin/upgrade.cgi${themeParam}`
+            : `http://169.254.1.1${themeParam}`;
+          browser.tabs.update(tabs[0].id, { url: newUrl });
+        }
+        break;
+    }
+  } catch (error) {
+    console.error('Error handling command:', error);
+  }
 });

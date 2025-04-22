@@ -1,0 +1,158 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #3A434C;
+  color: white;
+  font-size: 14px;
+}
+
+.container {
+  background-color: #3b4753;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+.section {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #4B5563;
+  border-radius: 4px;
+}
+
+.section h2 {
+  margin-top: 0;
+  color: white;
+  font-size: 1.4em;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+  color: white;
+  font-size: 1.1em;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #6B7280;
+  border-radius: 4px;
+  background: #4B5563;
+  color: white;
+  font-size: 1em;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #8B5CF6;
+}
+
+button {
+  background-color: #5A6470;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1em;
+  min-width: 150px;
+  transition: background-color 0.2s;
+  height: 48px;
+  line-height: 24px;
+}
+
+button:hover {
+  background-color: #6B7684;
+}
+
+#save {
+  background-color: #00a1e0;
+}
+
+#save:hover {
+  background-color: #0088c2;
+}
+
+#addAddress {
+  background-color: #059669;
+}
+
+#addAddress:hover {
+  background-color: #047857;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.address-container {
+  margin: 10px 0;
+}
+
+.address-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.address-entry input {
+  margin-top: 0;
+}
+
+.remove-address {
+  background: #dc2626;
+  padding: 4px 8px;
+  font-size: 14px;
+  height: 36px;
+  min-width: auto;
+}
+
+.remove-address:hover {
+  background: #b91c1c;
+}
+
+.radio-group {
+  margin: 10px 0;
+}
+
+.radio-label {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.version-info {
+  text-align: center;
+  margin-top: 20px;
+  color: #9CA3AF;
+}
+
+.update-status {
+  text-align: center;
+  margin-top: 10px;
+  min-height: 20px;
+}
+
+.developer-info {
+  text-align: center;
+  color: #9CA3AF;
+  margin-top: 20px;
+  font-size: 12px;
+  font-style: italic;
+} 

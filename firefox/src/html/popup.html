@@ -2,134 +2,7 @@
 <html>
 <head>
   <link rel="stylesheet" href="../css/styles.css">
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      background-color: #3A434C;  /* Dark gray/slate background color */
-      color: white;
-      box-sizing: border-box;
-      margin: 0;
-    }
-    .container {
-      background-color: #3b4753;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    }
-    .image-container {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    img {
-      width: 150px;
-      height: 75px;
-      object-fit: contain;
-    }
-    button {
-      width: 100%;
-      margin: 5px 0;
-      padding: 10px;
-      cursor: pointer;
-      border: 1px solid #6B7280;  /* Darker border for buttons */
-      border-radius: 4px;
-      background: #5A6470;
-      color: white;
-      text-align: left;
-      transition: background-color 0.2s;
-    }
-    button:hover {
-      background: #6B7684;  /* Lighter gray on hover */
-    }
-    h3 {
-      text-align: center;
-      margin: 0 0 10px 0;
-      color: white;
-    }
-    .update-banner {
-      background-color: #dc2626;  /* Changed from blue to red */
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      display: none;
-      cursor: pointer;
-      text-align: center;
-      color: white;
-    }
-    .update-banner:hover {
-      background-color: #b91c1c;  /* Changed from blue to darker red */
-    }
-    .update-text {
-      font-size: 14px;
-      text-align: center;
-      margin: 0;
-    }
-    .rescue-mode {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      color: white;
-      padding: 5px;
-    }
-    .rescue-mode input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      margin-right: 8px;
-    }
-    .rescue-mode label {
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .rescue-info {
-      display: none;
-      margin-top: 5px;
-      font-size: 12px;
-      color: #9CA3AF;
-      padding: 5px;
-    }
-    .address-list {
-      max-height: 200px;
-      overflow-y: auto;
-      margin: 5px 0;
-    }
-    .address-list::-webkit-scrollbar {
-      width: 8px;
-    }
-    .address-list::-webkit-scrollbar-track {
-      background: #4B5563;
-      border-radius: 4px;
-    }
-    .address-list::-webkit-scrollbar-thumb {
-      background: #6B7280;
-      border-radius: 4px;
-    }
-    .developer-info {
-      text-align: center;
-      color: #9CA3AF;
-      margin-top: 10px;
-      font-size: 12px;
-      font-style: italic;
-    }
-    .network-message {
-      color: #9CA3AF;
-      font-size: 13px;
-      text-align: center;
-      padding: 10px;
-      margin: 5px 0;
-      border: 1px solid #4B5563;
-      border-radius: 4px;
-      background-color: #374151;
-    }
-    .loading-indicator {
-      text-align: center;
-      color: #9CA3AF;
-      padding: 10px;
-      font-style: italic;
-    }
-  </style>
+  <link rel="stylesheet" href="../css/popup.css">
 </head>
 <body>
   <h3>Px2 Platform Connect</h3>
@@ -137,7 +10,7 @@
     <p class="update-text">New version available! Click to update</p>
   </div>
   <div class="image-container">
-    <img id="mainImage" src="../assets/px2.PNG" alt="Px2 platform connect" width="750" height="750">
+    <img id="mainImage" src="../images/px2.PNG" alt="Px2 platform connect" width="750" height="750">
   </div>
   <div class="container">
     <button id="defaultIp">Connect to 169.254.1.1</button>

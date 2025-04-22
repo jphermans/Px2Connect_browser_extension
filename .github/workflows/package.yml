@@ -49,6 +49,8 @@ jobs:
             src/html/welcome.html \
             src/js/welcome.js \
             src/css/styles.css \
+            src/css/popup.css \
+            src/css/options.css \
             src/settings.ts \
             src/shortcuts.ts \
             src/chrome.d.ts \

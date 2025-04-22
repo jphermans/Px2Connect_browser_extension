@@ -266,3 +266,48 @@ chrome.action.onClicked.addListener(() => {
     chrome.tabs.create({ url });
   });
 });
+
+// Handle keyboard shortcuts
+chrome.commands.onCommand.addListener(async (command) => {
+  try {
+    const settings = await chrome.storage.sync.get(['ipType', 'addresses', 'theme']);
+    const theme = settings.theme || 'flatdark';
+    const themeParam = `?theme=${theme}`;
+    
+    switch (command) {
+      case 'open-default':
+        const rescueMode = await chrome.storage.local.get('rescueMode');
+        const baseUrl = 'http://169.254.1.1';
+        const url = rescueMode.rescueMode 
+          ? `${baseUrl}/cgi-bin/upgrade.cgi${themeParam}`
+          : `${baseUrl}${themeParam}`;
+        chrome.tabs.create({ url });
+        break;
+      case 'open-custom-1':
+        if (settings.ipType === 'custom' && settings.addresses?.[0]) {
+          chrome.tabs.create({ url: `http://${settings.addresses[0]}${themeParam}` });
+        }
+        break;
+      case 'open-custom-2':
+        if (settings.ipType === 'custom' && settings.addresses?.[1]) {
+          chrome.tabs.create({ url: `http://${settings.addresses[1]}${themeParam}` });
+        }
+        break;
+      case 'toggle-rescue':
+        const currentState = await chrome.storage.local.get('rescueMode');
+        const newState = !currentState.rescueMode;
+        await chrome.storage.local.set({ rescueMode: newState });
+        // If default IP tab is open, update it
+        const tabs = await chrome.tabs.query({ url: 'http://169.254.1.1/*' });
+        if (tabs.length > 0) {
+          const newUrl = newState 
+            ? `http://169.254.1.1/cgi-bin/upgrade.cgi${themeParam}`
+            : `http://169.254.1.1${themeParam}`;
+          chrome.tabs.update(tabs[0].id, { url: newUrl });
+        }
+        break;
+    }
+  } catch (error) {
+    console.error('Error handling command:', error);
+  }
+});

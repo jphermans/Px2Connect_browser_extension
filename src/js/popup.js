@@ -31,20 +31,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         errorDiv.style.display = 'block';
     }
 
-    function showNetworkMessage(message) {
-        let msgDiv = document.querySelector('.network-message');
-        if (!msgDiv) {
-            msgDiv = document.createElement('div');
-            msgDiv.className = 'network-message';
-            addressList.parentNode.insertBefore(msgDiv, addressList);
-        }
-        msgDiv.textContent = message;
-    }
-
     async function checkNetworkInterfaces() {
         try {
             if (!chrome?.system?.network?.getNetworkInterfaces) {
-                showError('Network API not available');
+                console.log('Network API not available - skipping interface check');
                 return [];
             }
 
@@ -55,8 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 !iface.address.startsWith('fe80:')
             );
         } catch (error) {
-            console.error('Network check error:', error);
-            showError('Failed to check network interfaces');
+            console.log('Network check skipped:', error);
             return [];
         }
     }
@@ -84,19 +73,35 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Check for updates immediately
             await checkForUpdates();
 
-            // Load settings
-            const settings = await chrome.storage.sync.get(['ipType', 'addresses', 'addressType', 'theme', 'defaultPort']);
+            // Load settings and rescue mode state
+            const [settings, rescueState] = await Promise.all([
+                chrome.storage.sync.get(['ipType', 'addresses', 'addressType', 'theme', 'defaultPort']),
+                chrome.storage.local.get('rescueMode')
+            ]);
+            
             const ipType = settings.ipType || 'default';
             const addresses = settings.addresses || [];
             const addressType = settings.addressType || 'ip';
             const defaultPort = settings.defaultPort || '8080';
 
+            // Set rescue mode checkbox state
+            const rescueMode = document.getElementById('rescueMode');
+            if (rescueMode) {
+                rescueMode.checked = rescueState.rescueMode || false;
+                // Listen for changes to sync with storage
+                rescueMode.addEventListener('change', async (e) => {
+                    await chrome.storage.local.set({ rescueMode: e.target.checked });
+                });
+            }
+
             // Set up default button
             defaultIpBtn.onclick = () => {
                 const baseUrl = 'http://169.254.1.1';
-                const theme = settings.theme || 'flatdark';
-                const themeParam = `?theme=${theme}`;
-                chrome.tabs.create({ url: `${baseUrl}${themeParam}` });
+                const rescueMode = document.getElementById('rescueMode').checked;
+                const url = rescueMode 
+                    ? `${baseUrl}/cgi-bin/upgrade.cgi`
+                    : baseUrl;
+                chrome.tabs.create({ url });
                 window.close();
             };
 
@@ -140,6 +145,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         } finally {
             hideLoading();
         }
+    }
+
+    function showNetworkMessage(message) {
+        // Only show network messages if we actually found interfaces
+        if (!message.includes('Found')) {
+            return;
+        }
+        
+        let msgDiv = document.querySelector('.network-message');
+        if (!msgDiv) {
+            msgDiv = document.createElement('div');
+            msgDiv.className = 'network-message';
+            addressList.parentNode.insertBefore(msgDiv, addressList);
+        }
+        msgDiv.textContent = message;
     }
 
     // Start initialization

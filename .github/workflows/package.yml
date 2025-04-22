@@ -39,12 +39,22 @@ jobs:
           sed -i "s/CFBundleShortVersionString.*/CFBundleShortVersionString<\/key><string>${VERSION}<\/string>/" safari/Info.plist
           sed -i "s/CFBundleVersion.*/CFBundleVersion<\/key><string>${VERSION}<\/string>/" safari/Info.plist
 
-      - name: Create Safari Info.plist
+      - name: Create Safari Package
         run: |
-          mkdir -p safari
-          cp -r src safari/
+          # Create Safari directory structure
+          mkdir -p safari/src
+          
+          # Copy source files
+          cp -r src/* safari/src/
+          
+          # Copy manifest
           cp manifest.json safari/
-          cp safari/Info.plist safari/
+          
+          # Update Safari-specific files
+          sed -i 's/chrome\./safari\.extension\./g' safari/src/js/*.js
+          sed -i 's/"manifest_version": 3/"manifest_version": 2/' safari/manifest.json
+          sed -i 's/"action"/"browser_action"/' safari/manifest.json
+          sed -i 's/"service_worker"/"background"/' safari/manifest.json
 
       - name: Package Chrome/Edge/Brave Extension
         run: |

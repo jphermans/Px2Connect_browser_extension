@@ -36,10 +36,19 @@ jobs:
       - name: Update manifest version
         run: |
           sed -i "s/\"version\": \".*\"/\"version\": \"${VERSION}\"/" manifest.json
+          sed -i "s/CFBundleShortVersionString.*/CFBundleShortVersionString<\/key><string>${VERSION}<\/string>/" safari/Info.plist
+          sed -i "s/CFBundleVersion.*/CFBundleVersion<\/key><string>${VERSION}<\/string>/" safari/Info.plist
 
-      - name: Package Extension
+      - name: Create Safari Info.plist
         run: |
-          zip -r px2-connect.zip \
+          mkdir -p safari
+          cp -r src safari/
+          cp manifest.json safari/
+          cp safari/Info.plist safari/
+
+      - name: Package Chrome/Edge/Brave Extension
+        run: |
+          zip -r px2-connect-chrome.zip \
             manifest.json \
             src/js/background.js \
             src/html/options.html \
@@ -62,23 +71,51 @@ jobs:
             README.md \
             LICENSE
 
+      - name: Package Safari Extension
+        run: |
+          cd safari
+          zip -r ../px2-connect-safari.zip \
+            manifest.json \
+            Info.plist \
+            src/js/background.js \
+            src/html/options.html \
+            src/js/options.js \
+            src/html/popup.html \
+            src/js/popup.js \
+            src/html/welcome.html \
+            src/js/welcome.js \
+            src/css/styles.css \
+            src/css/popup.css \
+            src/css/options.css \
+            src/settings.ts \
+            src/shortcuts.ts \
+            src/chrome.d.ts \
+            src/images/PF8-removebg-preview.png \
+            src/images/px2.PNG
+
       - name: Create GitHub Release (for manual run)
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.release_tag }}
           name: Release ${{ github.event.inputs.release_tag }}
-          files: px2-connect.zip
+          files: |
+            px2-connect-chrome.zip
+            px2-connect-safari.zip
 
-      - name: Upload Artifact (for manual run)
+      - name: Upload Artifacts (for manual run)
         if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: px2-connect
-          path: px2-connect.zip
+          path: |
+            px2-connect-chrome.zip
+            px2-connect-safari.zip
 
-      - name: Upload Release Package (for tag-triggered release)
+      - name: Upload Release Packages (for tag-triggered release)
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
-          files: px2-connect.zip
+          files: |
+            px2-connect-chrome.zip
+            px2-connect-safari.zip

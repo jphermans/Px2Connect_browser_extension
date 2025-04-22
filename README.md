@@ -87,10 +87,35 @@ The extension includes a special rescue mode for device recovery:
 5. Drag and drop the downloaded `.zip` file into the browser window
 
 ### Safari Installation
-1. Download the Safari version from the [Releases](../../releases) page
-2. Open Safari and go to Safari > Settings > Extensions
-3. Enable the extension and grant necessary permissions
-4. The extension will be available in your Safari toolbar
+1. **Development Setup**:
+   - Install Xcode from the Mac App Store
+   - Install the latest version of Safari
+   - Enable Safari Extension Development in Safari Preferences > Advanced
+
+2. **Developer Requirements**:
+   - Apple Developer Account
+   - Safari Extension Certificate
+   - Xcode with Safari Extension Builder
+
+3. **Installation Steps**:
+   a. For Development:
+      1. Download the Safari version from the [Releases](../../releases) page
+      2. Open Xcode
+      3. Import the extension using Safari Extension Builder
+      4. Build and run the extension
+
+   b. For Production:
+      1. Download the extension from the Mac App Store
+      2. Open Safari and go to Safari > Settings > Extensions
+      3. Enable the extension and grant necessary permissions
+      4. The extension will be available in your Safari toolbar
+
+4. **Packaging for App Store**:
+   - The GitHub workflow creates the basic extension package
+   - Final packaging requires:
+     - Xcode for signing and building
+     - Safari Extension Builder for final packaging
+     - App Store Connect for submission
 
 ### Build from Source
 1. Clone this repository:
